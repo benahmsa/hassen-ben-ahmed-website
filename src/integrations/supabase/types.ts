@@ -44,6 +44,51 @@ export type Database = {
         }
         Relationships: []
       }
+      interviews: {
+        Row: {
+          created_at: string
+          description_ar: string
+          description_en: string
+          description_fr: string
+          id: string
+          published: boolean
+          sort_order: number
+          title_ar: string
+          title_en: string
+          title_fr: string
+          updated_at: string
+          youtube_id: string
+        }
+        Insert: {
+          created_at?: string
+          description_ar?: string
+          description_en?: string
+          description_fr?: string
+          id?: string
+          published?: boolean
+          sort_order?: number
+          title_ar?: string
+          title_en?: string
+          title_fr?: string
+          updated_at?: string
+          youtube_id: string
+        }
+        Update: {
+          created_at?: string
+          description_ar?: string
+          description_en?: string
+          description_fr?: string
+          id?: string
+          published?: boolean
+          sort_order?: number
+          title_ar?: string
+          title_en?: string
+          title_fr?: string
+          updated_at?: string
+          youtube_id?: string
+        }
+        Relationships: []
+      }
       media_items: {
         Row: {
           caption_ar: string
