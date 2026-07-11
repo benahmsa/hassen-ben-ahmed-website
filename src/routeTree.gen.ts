@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as PressRouteImport } from './routes/press'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BiographyRouteImport } from './routes/biography'
@@ -23,6 +24,11 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PressRoute = PressRouteImport.update({
+  id: '/press',
+  path: '/press',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsRoute = NewsRouteImport.update({
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/biography': typeof BiographyRoute
   '/contact': typeof ContactRoute
   '/news': typeof NewsRoute
+  '/press': typeof PressRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/biography': typeof BiographyRoute
   '/contact': typeof ContactRoute
   '/news': typeof NewsRoute
+  '/press': typeof PressRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog': typeof BlogIndexRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/biography': typeof BiographyRoute
   '/contact': typeof ContactRoute
   '/news': typeof NewsRoute
+  '/press': typeof PressRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/biography'
     | '/contact'
     | '/news'
+    | '/press'
     | '/sitemap.xml'
     | '/blog/$slug'
     | '/blog/'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/biography'
     | '/contact'
     | '/news'
+    | '/press'
     | '/sitemap.xml'
     | '/blog/$slug'
     | '/blog'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/biography'
     | '/contact'
     | '/news'
+    | '/press'
     | '/sitemap.xml'
     | '/blog/$slug'
     | '/blog/'
@@ -155,6 +167,7 @@ export interface RootRouteChildren {
   BiographyRoute: typeof BiographyRoute
   ContactRoute: typeof ContactRoute
   NewsRoute: typeof NewsRoute
+  PressRoute: typeof PressRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   BlogSlugRoute: typeof BlogSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -167,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/press': {
+      id: '/press'
+      path: '/press'
+      fullPath: '/press'
+      preLoaderRoute: typeof PressRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/news': {
@@ -243,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   BiographyRoute: BiographyRoute,
   ContactRoute: ContactRoute,
   NewsRoute: NewsRoute,
+  PressRoute: PressRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   BlogSlugRoute: BlogSlugRoute,
   BlogIndexRoute: BlogIndexRoute,

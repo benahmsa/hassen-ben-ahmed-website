@@ -8,6 +8,7 @@ const NAV: { key: DictKey; to: string }[] = [
   { key: "navBlog", to: "/blog" },
   { key: "navBio", to: "/biography" },
   { key: "navArchives", to: "/archives" },
+  { key: "navPress", to: "/press" },
   { key: "navNews", to: "/news" },
   { key: "navContact", to: "/contact" },
 ];
