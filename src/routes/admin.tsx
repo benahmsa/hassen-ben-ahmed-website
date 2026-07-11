@@ -25,6 +25,7 @@ const TABS = [
   { id: "posts", label: "Articles / المقالات" },
   { id: "news", label: "Actualités / الأخبار" },
   { id: "media", label: "Archives / الأرشيف" },
+  { id: "interviews", label: "Interviews / حوارات" },
   { id: "bio", label: "Biographie / السيرة" },
   { id: "messages", label: "Messages / الرسائل" },
   { id: "users", label: "Admins / المشرفون" },
