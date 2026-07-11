@@ -62,20 +62,25 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               ))}
             </nav>
 
-            <div className="flex overflow-hidden rounded-md border border-border">
-              {LANGS.map((l) => (
-                <button
-                  key={l.code}
-                  onClick={() => setLang(l.code)}
-                  className={`px-2.5 py-1 text-xs font-semibold transition-colors ${
-                    lang === l.code
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-card text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {l.label}
-                </button>
-              ))}
+            <div className="relative">
+              <select
+                aria-label="Language"
+                value={lang}
+                onChange={(e) => setLang(e.target.value as Lang)}
+                className="appearance-none rounded-md border border-border bg-card px-3 py-1.5 pe-7 text-xs font-semibold text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"
+              >
+                {LANGS.map((l) => (
+                  <option key={l.code} value={l.code}>
+                    {l.label}
+                  </option>
+                ))}
+              </select>
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 end-2 flex items-center text-muted-foreground"
+              >
+                ▾
+              </span>
             </div>
           </div>
 
