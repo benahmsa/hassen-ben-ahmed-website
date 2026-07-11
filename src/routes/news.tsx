@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
+import { Pagination, usePaged } from "@/components/site/Pagination";
 import { useLanguage, localized, formatDate } from "@/lib/i18n";
 
 const newsQuery = queryOptions({
@@ -35,6 +37,8 @@ export const Route = createFileRoute("/news")({
 function NewsPage() {
   const news = useSuspenseQuery(newsQuery).data;
   const { t, lang } = useLanguage();
+  const [page, setPage] = useState(1);
+  const { pageItems, totalPages, current } = usePaged(news, page);
 
   return (
     <SiteLayout>
@@ -43,18 +47,21 @@ function NewsPage() {
         {news.length === 0 ? (
           <p className="text-muted-foreground">{t("noContent")}</p>
         ) : (
-          <div className="space-y-6">
-            {news.map((n) => (
-              <article
-                key={n.id}
-                className="rounded-lg border border-border border-s-4 border-s-primary bg-card p-6 shadow-[var(--shadow-card)]"
-              >
-                <p className="text-xs text-muted-foreground">{formatDate(n.created_at, lang)}</p>
-                <h2 className="mt-1 font-display text-2xl font-bold">{localized(n, "title", lang)}</h2>
-                <p className="prose-article mt-3 !text-base">{localized(n, "content", lang)}</p>
-              </article>
-            ))}
-          </div>
+          <>
+            <div className="space-y-6">
+              {pageItems.map((n) => (
+                <article
+                  key={n.id}
+                  className="rounded-lg border border-border border-s-4 border-s-primary bg-card p-6 shadow-[var(--shadow-card)]"
+                >
+                  <p className="text-xs text-muted-foreground">{formatDate(n.created_at, lang)}</p>
+                  <h2 className="mt-1 font-display text-2xl font-bold">{localized(n, "title", lang)}</h2>
+                  <p className="prose-article mt-3 !text-base">{localized(n, "content", lang)}</p>
+                </article>
+              ))}
+            </div>
+            <Pagination page={current} totalPages={totalPages} onChange={setPage} />
+          </>
         )}
       </div>
     </SiteLayout>
