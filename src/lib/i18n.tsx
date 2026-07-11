@@ -29,11 +29,25 @@ const dict = {
   navPress: { ar: "الصحافة", fr: "Presse", en: "Press" },
   navContact: { ar: "اتصل بي", fr: "Contact", en: "Contact" },
   navInterviews: { ar: "حوارات", fr: "Interviews", en: "Interviews" },
+  navInterviewsCommentary: { ar: "مداخلات", fr: "Prises de parole", en: "Commentary" },
+  navInterviewsMedia: { ar: "الظهور الإعلامي", fr: "Invitations médias", en: "Media Appearances" },
   interviewsTitle: { ar: "حوارات", fr: "Interviews", en: "Interviews" },
   interviewsIntro: {
     ar: "حوارات تلفزيونية ومقابلات مع حسن بن أحمد.",
     fr: "Entretiens télévisés et interviews avec Hassen Ben Ahmed.",
     en: "Television interviews and conversations with Hassen Ben Ahmed.",
+  },
+  interviewsCommentaryTitle: { ar: "مداخلات", fr: "Prises de parole", en: "Commentary" },
+  interviewsCommentaryIntro: {
+    ar: "مداخلات وتعليقات مباشرة بصوت حسن بن أحمد، من إنتاجه الشخصي.",
+    fr: "Prises de parole et commentaires directs de Hassen Ben Ahmed, face caméra.",
+    en: "Direct commentary and remarks by Hassen Ben Ahmed, facing the camera.",
+  },
+  interviewsMediaTitle: { ar: "الظهور الإعلامي", fr: "Invitations médias", en: "Media Appearances" },
+  interviewsMediaIntro: {
+    ar: "مقابلات وحوارات تلفزيونية وإذاعية استضاف فيها حسن بن أحمد.",
+    fr: "Entretiens télévisés et radiophoniques où Hassen Ben Ahmed est invité.",
+    en: "Television and radio interviews where Hassen Ben Ahmed is a guest.",
   },
   pressTitle: { ar: "مقالاتي في الصحافة", fr: "Mes articles de presse", en: "My press articles" },
   pressIntro: {
