@@ -27,12 +27,12 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <div dir={dir} className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
-        <div className="container-site flex h-16 items-center justify-between gap-4">
-          <Link to="/" className="min-w-0">
-            <span className="block truncate font-display text-xl font-bold leading-tight text-foreground">
+        <div className="container-site grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-2 py-3 lg:flex lg:h-16 lg:justify-between lg:gap-4 lg:py-0">
+          <Link to="/" className="order-2 min-w-0 lg:order-none">
+            <span className="block font-display text-lg font-bold leading-tight text-foreground sm:text-xl">
               {t("siteName")}
             </span>
-            <span className="block truncate text-[11px] tracking-wide text-muted-foreground">
+            <span className="block text-[11px] leading-snug tracking-wide text-muted-foreground">
               {t("tagline")}
             </span>
           </Link>
@@ -51,7 +51,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="order-1 flex items-center justify-end gap-2 lg:order-none">
             <div className="flex overflow-hidden rounded-md border border-border">
               {LANGS.map((l) => (
                 <button
@@ -100,21 +100,24 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <main className="flex-1">{children}</main>
 
       <footer className="mt-16 border-t-4 border-foreground bg-card">
-        <div className="container-site flex flex-col gap-4 py-8 md:flex-row md:items-center md:justify-between">
-          <div>
+        <div className="container-site flex flex-col gap-6 py-8 md:flex-row md:items-center md:justify-between md:gap-4">
+          <div className="text-center md:text-start">
             <p className="font-display text-lg font-bold">{t("siteName")}</p>
             <p className="text-sm text-muted-foreground">{t("tagline")}</p>
           </div>
-          <div className="flex items-center gap-5 text-sm text-muted-foreground">
-            <Link to="/contact" className="hover:text-primary">
-              {t("navContact")}
-            </Link>
-            <Link to="/auth" className="hover:text-primary">
-              {t("admin")}
-            </Link>
-            <span>
+          <div className="flex flex-col items-center gap-3 text-sm text-muted-foreground md:flex-row md:items-center md:gap-5">
+            <div className="flex items-center gap-5">
+              <Link to="/contact" className="hover:text-primary">
+                {t("navContact")}
+              </Link>
+              <Link to="/auth" className="hover:text-primary">
+                {t("admin")}
+              </Link>
+            </div>
+            <span className="text-center text-xs md:text-sm">
               © {new Date().getFullYear()} · {t("footerRights")}
             </span>
+
           </div>
         </div>
       </footer>
