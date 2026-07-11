@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { useLanguage, localized } from "@/lib/i18n";
 import { toEmbedUrl } from "@/lib/storage";
+import { Pagination, usePaged } from "@/components/site/Pagination";
 import { Play, X } from "lucide-react";
 
 const mediaQuery = queryOptions({
