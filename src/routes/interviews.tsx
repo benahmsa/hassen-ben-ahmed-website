@@ -56,6 +56,8 @@ export const Route = createFileRoute("/interviews")({
 function InterviewsPage() {
   const { data } = useSuspenseQuery(interviewsQuery);
   const { t, lang } = useLanguage();
+  const [page, setPage] = useState(1);
+  const { pageItems, totalPages, current } = usePaged(data, page);
 
   return (
     <SiteLayout>
