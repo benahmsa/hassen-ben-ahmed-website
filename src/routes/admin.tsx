@@ -131,6 +131,7 @@ function AdminPage() {
           {tab === "posts" && <PostsManager />}
           {tab === "news" && <NewsManager />}
           {tab === "media" && <MediaManager />}
+          {tab === "interviews" && <InterviewsManager />}
           {tab === "bio" && <BioManager />}
           {tab === "messages" && <MessagesManager />}
           {tab === "users" && <UsersManager currentUserId={session.user.id} />}
