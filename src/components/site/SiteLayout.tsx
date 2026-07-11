@@ -29,7 +29,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
     <div dir={dir} className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
         <div className="container-site flex flex-col gap-2 py-3 lg:h-16 lg:flex-row lg:items-center lg:justify-between lg:gap-4 lg:py-0">
-          {/* Mobile row 1: menu edge-start, langs edge-end (title lives below) */}
+          {/* Mobile: menu edge-start, title centered, langs edge-end. Desktop: title, nav, langs in one row. */}
           <div className="order-1 flex items-center justify-between gap-2 lg:order-none lg:contents">
             <button
               className="rounded-md p-2 text-foreground lg:hidden"
@@ -39,7 +39,10 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               {open ? <X size={22} /> : <Menu size={22} />}
             </button>
 
-            <Link to="/" className="order-2 hidden min-w-0 lg:order-none lg:block">
+            <Link
+              to="/"
+              className="block min-w-0 flex-1 text-center lg:flex-none lg:text-start"
+            >
               <span className="block font-display text-lg font-bold leading-tight text-foreground sm:text-xl">
                 {t("siteName")}
               </span>
@@ -83,16 +86,6 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               </span>
             </div>
           </div>
-
-          {/* Mobile row 2: full-width title/tagline */}
-          <Link to="/" className="order-2 min-w-0 lg:hidden">
-            <span className="block font-display text-lg font-bold leading-tight text-foreground">
-              {t("siteName")}
-            </span>
-            <span className="block text-[11px] leading-snug tracking-wide text-muted-foreground">
-              {t("tagline")}
-            </span>
-          </Link>
         </div>
 
         {open && (
