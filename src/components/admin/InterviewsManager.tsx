@@ -11,6 +11,7 @@ type Row = {
   description_ar: string; description_fr: string; description_en: string;
   published: boolean;
   sort_order: number;
+  published_at: string | null;
   created_at: string;
 };
 
