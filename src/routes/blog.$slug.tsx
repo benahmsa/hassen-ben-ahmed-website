@@ -27,7 +27,7 @@ export const Route = createFileRoute("/blog/$slug")({
   head: ({ loaderData }) => ({
     meta: loaderData
       ? [
-          { title: `${loaderData.title_fr || loaderData.title_ar} — Hassen Ben Ahmed` },
+          { title: `${loaderData.title_fr || loaderData.title_ar} - Hassen Ben Ahmed` },
           { name: "description", content: (loaderData.excerpt_fr || loaderData.excerpt_ar).slice(0, 155) },
           { property: "og:title", content: loaderData.title_fr || loaderData.title_ar },
           { property: "og:description", content: (loaderData.excerpt_fr || loaderData.excerpt_ar).slice(0, 155) },

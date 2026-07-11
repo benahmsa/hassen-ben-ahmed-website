@@ -17,9 +17,9 @@ const dict = {
     en: "Hassen Ben Ahmed",
   },
   tagline: {
-    ar: "صحفي — فنون، ثقافة و رياضة",
-    fr: "Journaliste — arts, culture et sport",
-    en: "Journalist — arts, culture and sport",
+    ar: "صحفي - فنون، ثقافة و رياضة",
+    fr: "Journaliste - arts, culture et sport",
+    en: "Journalist - arts, culture and sport",
   },
   navHome: { ar: "الرئيسية", fr: "Accueil", en: "Home" },
   navBlog: { ar: "المدونة", fr: "Blog", en: "Blog" },

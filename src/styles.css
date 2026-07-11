@@ -42,7 +42,7 @@
 :root {
   --radius: 0.375rem;
 
-  /* Warm paper, ink, carmine — sober bright editorial */
+  /* Warm paper, ink, carmine - sober bright editorial */
   --background: oklch(0.982 0.006 85);
   --foreground: oklch(0.24 0.02 270);
   --card: oklch(1 0 0);

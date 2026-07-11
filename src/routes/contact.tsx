@@ -8,12 +8,12 @@ import { useLanguage } from "@/lib/i18n";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Hassen Ben Ahmed | اتصل بحسن بن أحمد" },
+      { title: "Contact - Hassen Ben Ahmed | اتصل بحسن بن أحمد" },
       {
         name: "description",
         content: "Contactez le journaliste Hassen Ben Ahmed via le formulaire de contact.",
       },
-      { property: "og:title", content: "Contact — Hassen Ben Ahmed" },
+      { property: "og:title", content: "Contact - Hassen Ben Ahmed" },
       { property: "og:description", content: "Formulaire de contact du journaliste Hassen Ben Ahmed." },
     ],
   }),

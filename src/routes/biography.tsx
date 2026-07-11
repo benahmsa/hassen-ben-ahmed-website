@@ -20,13 +20,13 @@ export const Route = createFileRoute("/biography")({
   loader: ({ context }) => context.queryClient.ensureQueryData(bioQuery),
   head: () => ({
     meta: [
-      { title: "Biographie — Hassen Ben Ahmed | سيرة حسن بن أحمد" },
+      { title: "Biographie - Hassen Ben Ahmed | سيرة حسن بن أحمد" },
       {
         name: "description",
         content:
           "Parcours du journaliste tunisien Hassen Ben Ahmed : presse écrite, pages arts et culture, football, télévision et festivals.",
       },
-      { property: "og:title", content: "Biographie — Hassen Ben Ahmed" },
+      { property: "og:title", content: "Biographie - Hassen Ben Ahmed" },
       { property: "og:description", content: "Le parcours du journaliste tunisien Hassen Ben Ahmed depuis 1979." },
     ],
   }),
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/biography")({
 
 const MILESTONES = [
   { year: "1979", ar: "بداية المسيرة في الصحافة المكتوبة", fr: "Débuts dans la presse écrite", en: "Career start in print journalism" },
-  { year: "1982", ar: "الترسيم في جريدة «البيان» — صفحات الفنون والثقافة", fr: "Titularisation à « Al Bayane » — pages arts et culture", en: "Permanent role at “Al Bayane” — arts & culture pages" },
+  { year: "1982", ar: "الترسيم في جريدة «البيان» - صفحات الفنون والثقافة", fr: "Titularisation à « Al Bayane » - pages arts et culture", en: "Permanent role at “Al Bayane” - arts & culture pages" },
   { year: "1986", ar: "من مؤسسي مهرجان الأغنية التونسية", fr: "Co-fondateur du Festival de la Chanson", en: "Co-founder of the Song Festival" },
   { year: "1999", ar: "إصدار كتاب عن الراحل نجيب الخطاب", fr: "Publication d'un livre sur Najib El Khattab", en: "Published a book on Najib El Khattab" },
   { year: "2013", ar: "نهاية مرحلة «البيان» بعد أكثر من 30 سنة", fr: "Fin du chapitre « Al Bayane » après plus de 30 ans", en: "End of the “Al Bayane” chapter after 30+ years" },

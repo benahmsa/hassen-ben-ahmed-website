@@ -20,13 +20,13 @@ export const Route = createFileRoute("/blog/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(postsQuery),
   head: () => ({
     meta: [
-      { title: "Blog — Hassen Ben Ahmed | مدونة حسن بن أحمد" },
+      { title: "Blog - Hassen Ben Ahmed | مدونة حسن بن أحمد" },
       {
         name: "description",
         content:
           "Articles, chroniques et prises de position du journaliste Hassen Ben Ahmed en arabe, français et anglais.",
       },
-      { property: "og:title", content: "Blog — Hassen Ben Ahmed" },
+      { property: "og:title", content: "Blog - Hassen Ben Ahmed" },
       { property: "og:description", content: "Articles et chroniques du journaliste Hassen Ben Ahmed." },
     ],
   }),

@@ -119,7 +119,7 @@ export function MediaManager() {
             <input dir="ltr" className={inputCls} value={url} placeholder="https://www.youtube.com/watch?v=..." onChange={(e) => setUrl(e.target.value)} />
           </Field>
         )}
-        <TriTextField label="Anecdote / légende — الحكاية" value={caption} onChange={setCaption} rows={3} />
+        <TriTextField label="Anecdote / légende - الحكاية" value={caption} onChange={setCaption} rows={3} />
         <div className="grid gap-4 md:grid-cols-2">
           <Field label="Ordre / الترتيب">
             <input type="number" dir="ltr" className={inputCls} value={sortOrder} onChange={(e) => setSortOrder(Number(e.target.value))} />
