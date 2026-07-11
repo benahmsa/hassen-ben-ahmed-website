@@ -41,7 +41,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
 
             <Link
               to="/"
-              className="order-2 min-w-0 flex-1 text-center lg:order-none lg:block lg:flex-none lg:text-start"
+              className="min-w-0 flex-1 text-center lg:block lg:flex-none lg:text-start"
             >
               <span className="block font-display text-lg font-bold leading-tight text-foreground sm:text-xl">
                 {t("siteName")}
