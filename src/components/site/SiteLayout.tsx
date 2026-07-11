@@ -27,12 +27,12 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <div dir={dir} className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
-        <div className="container-site flex h-16 items-center justify-between gap-4">
-          <Link to="/" className="min-w-0">
-            <span className="block truncate font-display text-xl font-bold leading-tight text-foreground">
+        <div className="container-site grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-2 py-3 lg:flex lg:h-16 lg:justify-between lg:gap-4 lg:py-0">
+          <Link to="/" className="order-2 min-w-0 lg:order-none">
+            <span className="block font-display text-lg font-bold leading-tight text-foreground sm:text-xl">
               {t("siteName")}
             </span>
-            <span className="block truncate text-[11px] tracking-wide text-muted-foreground">
+            <span className="block text-[11px] leading-snug tracking-wide text-muted-foreground">
               {t("tagline")}
             </span>
           </Link>
