@@ -28,6 +28,13 @@ const dict = {
   navNews: { ar: "الأخبار", fr: "Actualités", en: "News" },
   navPress: { ar: "الصحافة", fr: "Presse", en: "Press" },
   navContact: { ar: "اتصل بي", fr: "Contact", en: "Contact" },
+  navInterviews: { ar: "حوارات", fr: "Interviews", en: "Interviews" },
+  interviewsTitle: { ar: "حوارات", fr: "Interviews", en: "Interviews" },
+  interviewsIntro: {
+    ar: "حوارات تلفزيونية ومقابلات مع حسن بن أحمد.",
+    fr: "Entretiens télévisés et interviews avec Hassen Ben Ahmed.",
+    en: "Television interviews and conversations with Hassen Ben Ahmed.",
+  },
   pressTitle: { ar: "مقالاتي في الصحافة", fr: "Mes articles de presse", en: "My press articles" },
   pressIntro: {
     ar: "مقالات وتحاليل بقلمي، نُشرت في جريدة «البيان» التونسية.",

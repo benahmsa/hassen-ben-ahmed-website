@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PressRouteImport } from './routes/press'
 import { Route as NewsRouteImport } from './routes/news'
+import { Route as InterviewsRouteImport } from './routes/interviews'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BiographyRouteImport } from './routes/biography'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -34,6 +35,11 @@ const PressRoute = PressRouteImport.update({
 const NewsRoute = NewsRouteImport.update({
   id: '/news',
   path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InterviewsRoute = InterviewsRouteImport.update({
+  id: '/interviews',
+  path: '/interviews',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -84,6 +90,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/biography': typeof BiographyRoute
   '/contact': typeof ContactRoute
+  '/interviews': typeof InterviewsRoute
   '/news': typeof NewsRoute
   '/press': typeof PressRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -97,6 +104,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/biography': typeof BiographyRoute
   '/contact': typeof ContactRoute
+  '/interviews': typeof InterviewsRoute
   '/news': typeof NewsRoute
   '/press': typeof PressRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -111,6 +119,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/biography': typeof BiographyRoute
   '/contact': typeof ContactRoute
+  '/interviews': typeof InterviewsRoute
   '/news': typeof NewsRoute
   '/press': typeof PressRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/biography'
     | '/contact'
+    | '/interviews'
     | '/news'
     | '/press'
     | '/sitemap.xml'
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/biography'
     | '/contact'
+    | '/interviews'
     | '/news'
     | '/press'
     | '/sitemap.xml'
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/biography'
     | '/contact'
+    | '/interviews'
     | '/news'
     | '/press'
     | '/sitemap.xml'
@@ -166,6 +178,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BiographyRoute: typeof BiographyRoute
   ContactRoute: typeof ContactRoute
+  InterviewsRoute: typeof InterviewsRoute
   NewsRoute: typeof NewsRoute
   PressRoute: typeof PressRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -194,6 +207,13 @@ declare module '@tanstack/react-router' {
       path: '/news'
       fullPath: '/news'
       preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/interviews': {
+      id: '/interviews'
+      path: '/interviews'
+      fullPath: '/interviews'
+      preLoaderRoute: typeof InterviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -262,6 +282,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BiographyRoute: BiographyRoute,
   ContactRoute: ContactRoute,
+  InterviewsRoute: InterviewsRoute,
   NewsRoute: NewsRoute,
   PressRoute: PressRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,

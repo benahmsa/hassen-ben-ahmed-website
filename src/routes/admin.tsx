@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { useLanguage } from "@/lib/i18n";
 import { PostsManager } from "@/components/admin/PostsManager";
+import { InterviewsManager } from "@/components/admin/InterviewsManager";
 import { NewsManager } from "@/components/admin/NewsManager";
 import { MediaManager } from "@/components/admin/MediaManager";
 import { BioManager } from "@/components/admin/BioManager";
@@ -24,6 +25,7 @@ const TABS = [
   { id: "posts", label: "Articles / المقالات" },
   { id: "news", label: "Actualités / الأخبار" },
   { id: "media", label: "Archives / الأرشيف" },
+  { id: "interviews", label: "Interviews / حوارات" },
   { id: "bio", label: "Biographie / السيرة" },
   { id: "messages", label: "Messages / الرسائل" },
   { id: "users", label: "Admins / المشرفون" },
@@ -129,6 +131,7 @@ function AdminPage() {
           {tab === "posts" && <PostsManager />}
           {tab === "news" && <NewsManager />}
           {tab === "media" && <MediaManager />}
+          {tab === "interviews" && <InterviewsManager />}
           {tab === "bio" && <BioManager />}
           {tab === "messages" && <MessagesManager />}
           {tab === "users" && <UsersManager currentUserId={session.user.id} />}
