@@ -46,6 +46,7 @@ export type Database = {
       }
       interviews: {
         Row: {
+          category: string
           created_at: string
           description_ar: string
           description_en: string
@@ -61,6 +62,7 @@ export type Database = {
           youtube_id: string
         }
         Insert: {
+          category?: string
           created_at?: string
           description_ar?: string
           description_en?: string
@@ -76,6 +78,7 @@ export type Database = {
           youtube_id: string
         }
         Update: {
+          category?: string
           created_at?: string
           description_ar?: string
           description_en?: string

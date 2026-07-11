@@ -1,0 +1,1 @@
+ALTER TABLE public.interviews ADD COLUMN IF NOT EXISTS category TEXT NOT NULL DEFAULT 'media' CHECK (category IN ('commentary','media'));
