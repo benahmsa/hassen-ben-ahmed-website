@@ -28,65 +28,59 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <div dir={dir} className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
-        <div className="container-site flex flex-col gap-2 py-3 lg:h-16 lg:flex-row lg:items-center lg:justify-between lg:gap-4 lg:py-0">
-          {/* Mobile: controls (menu + lang) at start, title at end. Desktop: title, nav, langs at end. */}
-          <div className="order-1 flex items-center justify-between gap-2 lg:order-none lg:contents">
-            <div className="flex items-center gap-1 lg:order-3">
-              <button
-                className="rounded-md p-2 text-foreground lg:hidden"
-                onClick={() => setOpen((v) => !v)}
-                aria-label="Menu"
-              >
-                {open ? <X size={22} /> : <Menu size={22} />}
-              </button>
+        <div className="container-site grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-3 lg:flex lg:h-16 lg:justify-between lg:py-0">
+          <Link to="/" className="block min-w-0">
+            <span className="block font-display text-lg font-bold leading-tight text-foreground sm:text-xl">
+              {t("siteName")}
+            </span>
+            <span className="block text-[11px] leading-snug tracking-wide text-muted-foreground">
+              {t("tagline")}
+            </span>
+          </Link>
 
-              <div className="relative">
-                <select
-                  aria-label="Language"
-                  value={lang}
-                  onChange={(e) => setLang(e.target.value as Lang)}
-                  className="appearance-none rounded-md border border-border bg-card px-3 py-1.5 pe-7 text-xs font-semibold text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"
-                >
-                  {LANGS.map((l) => (
-                    <option key={l.code} value={l.code}>
-                      {l.label}
-                    </option>
-                  ))}
-                </select>
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-y-0 end-2 flex items-center text-muted-foreground"
-                >
-                  ▾
-                </span>
-              </div>
+          <nav className="hidden items-center gap-6 lg:flex">
+            {NAV.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={`text-sm font-medium transition-colors hover:text-primary ${
+                  pathname === item.to ? "text-primary" : "text-foreground"
+                }`}
+              >
+                {t(item.key)}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-1">
+            <div className="relative shrink-0">
+              <select
+                aria-label="Language"
+                value={lang}
+                onChange={(e) => setLang(e.target.value as Lang)}
+                className="appearance-none rounded-md border border-border bg-card px-3 py-1.5 pe-7 text-xs font-semibold text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"
+              >
+                {LANGS.map((l) => (
+                  <option key={l.code} value={l.code}>
+                    {l.label}
+                  </option>
+                ))}
+              </select>
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 end-2 flex items-center text-muted-foreground"
+              >
+                ▾
+              </span>
             </div>
 
-            <Link
-              to="/"
-              className="block min-w-0 text-end lg:order-1 lg:flex-none lg:text-start"
+            <button
+              className="shrink-0 rounded-md p-2 text-foreground lg:hidden"
+              onClick={() => setOpen((v) => !v)}
+              aria-label="Menu"
             >
-              <span className="block font-display text-lg font-bold leading-tight text-foreground sm:text-xl">
-                {t("siteName")}
-              </span>
-              <span className="block text-[11px] leading-snug tracking-wide text-muted-foreground">
-                {t("tagline")}
-              </span>
-            </Link>
-
-            <nav className="hidden items-center gap-6 lg:order-2 lg:flex">
-              {NAV.map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    pathname === item.to ? "text-primary" : "text-foreground"
-                  }`}
-                >
-                  {t(item.key)}
-                </Link>
-              ))}
-            </nav>
+              {open ? <X size={22} /> : <Menu size={22} />}
+            </button>
           </div>
         </div>
 
