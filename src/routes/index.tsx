@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { useLanguage, localized, formatDate } from "@/lib/i18n";
 import heroImg from "@/assets/hero-press.jpg";
+import portraitAsset from "@/assets/hassen-portrait.jpg.asset.json";
 
 const homeQuery = queryOptions({
   queryKey: ["home-data"],
@@ -57,13 +58,27 @@ function HomePage() {
           height={1088}
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/55 to-background/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/75 to-background/95" />
+        {/* Subtle portrait fade of the journalist */}
+        <img
+          src={portraitAsset.url}
+          alt="Portrait de Hassen Ben Ahmed"
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 end-0 h-full w-full object-cover object-center opacity-25 mix-blend-luminosity md:w-2/3 md:opacity-40"
+          style={{
+            WebkitMaskImage:
+              "linear-gradient(to left, hsl(0 0% 0% / 0.95) 0%, hsl(0 0% 0% / 0.6) 45%, transparent 85%)",
+            maskImage:
+              "linear-gradient(to left, hsl(0 0% 0% / 0.95) 0%, hsl(0 0% 0% / 0.6) 45%, transparent 85%)",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/30 to-transparent" />
         <div className="container-site relative flex min-h-[70vh] flex-col justify-center py-20">
           <p className="kicker mb-4">{t("tagline")}</p>
           <h1 className="max-w-3xl font-display text-4xl font-bold leading-tight md:text-6xl">
             {t("heroTitle")}
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-foreground/80">
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-foreground/85">
             {t("heroText")}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
