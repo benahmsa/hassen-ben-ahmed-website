@@ -51,7 +51,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="order-1 flex items-center justify-end gap-2 lg:order-none">
             <div className="flex overflow-hidden rounded-md border border-border">
               {LANGS.map((l) => (
                 <button
