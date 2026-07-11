@@ -7,7 +7,7 @@ import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
-    meta: [{ title: "Connexion — Hassen Ben Ahmed" }, { name: "robots", content: "noindex" }],
+    meta: [{ title: "Connexion - Hassen Ben Ahmed" }, { name: "robots", content: "noindex" }],
   }),
   component: AuthPage,
 });

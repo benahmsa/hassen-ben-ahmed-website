@@ -78,14 +78,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Hassen Ben Ahmed — Journaliste | حسن بن أحمد" },
+      { title: "Hassen Ben Ahmed - Journaliste | حسن بن أحمد" },
       {
         name: "description",
         content:
           "Site officiel de Hassen Ben Ahmed, journaliste tunisien spécialisé dans les arts, la culture et le sport. Blog, biographie, archives et actualités.",
       },
       { name: "author", content: "Hassen Ben Ahmed" },
-      { property: "og:title", content: "Hassen Ben Ahmed — Journaliste | حسن بن أحمد" },
+      { property: "og:title", content: "Hassen Ben Ahmed - Journaliste | حسن بن أحمد" },
       {
         property: "og:description",
         content:

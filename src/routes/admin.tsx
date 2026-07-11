@@ -14,7 +14,7 @@ import { btnPrimary } from "@/components/admin/ui";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
-    meta: [{ title: "Administration — Hassen Ben Ahmed" }, { name: "robots", content: "noindex" }],
+    meta: [{ title: "Administration - Hassen Ben Ahmed" }, { name: "robots", content: "noindex" }],
   }),
   ssr: false,
   component: AdminPage,

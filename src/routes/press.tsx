@@ -24,13 +24,13 @@ export const Route = createFileRoute("/press")({
   loader: ({ context }) => context.queryClient.ensureQueryData(pressQuery),
   head: () => ({
     meta: [
-      { title: "Presse — Al Bayane | Hassen Ben Ahmed" },
+      { title: "Presse - Al Bayane | Hassen Ben Ahmed" },
       {
         name: "description",
         content:
           "Sélection d'articles et d'entretiens signés Hassen Ben Ahmed, parus dans le journal tunisien Al Bayane.",
       },
-      { property: "og:title", content: "Archives de presse — Al Bayane" },
+      { property: "og:title", content: "Archives de presse - Al Bayane" },
       {
         property: "og:description",
         content: "Articles et entretiens parus dans le journal tunisien Al Bayane.",

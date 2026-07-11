@@ -20,12 +20,12 @@ export const Route = createFileRoute("/news")({
   loader: ({ context }) => context.queryClient.ensureQueryData(newsQuery),
   head: () => ({
     meta: [
-      { title: "Actualités — Hassen Ben Ahmed | أخبار حسن بن أحمد" },
+      { title: "Actualités - Hassen Ben Ahmed | أخبار حسن بن أحمد" },
       {
         name: "description",
         content: "Annonces et actualités en cours du journaliste Hassen Ben Ahmed.",
       },
-      { property: "og:title", content: "Actualités — Hassen Ben Ahmed" },
+      { property: "og:title", content: "Actualités - Hassen Ben Ahmed" },
       { property: "og:description", content: "Annonces et actualités en cours." },
     ],
   }),

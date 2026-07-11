@@ -53,7 +53,7 @@ function HomePage() {
       <section className="relative overflow-hidden border-b border-border">
         <img
           src={heroImg}
-          alt="Bureau de presse — machine à écrire, micro et journaux"
+          alt="Bureau de presse - machine à écrire, micro et journaux"
           width={1920}
           height={1088}
           className="absolute inset-0 h-full w-full object-cover"

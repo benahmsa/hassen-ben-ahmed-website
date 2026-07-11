@@ -25,13 +25,13 @@ export const Route = createFileRoute("/archives")({
   loader: ({ context }) => context.queryClient.ensureQueryData(mediaQuery),
   head: () => ({
     meta: [
-      { title: "Archives — Hassen Ben Ahmed | أرشيف حسن بن أحمد" },
+      { title: "Archives - Hassen Ben Ahmed | أرشيف حسن بن أحمد" },
       {
         name: "description",
         content:
           "Photos, vidéos et anecdotes tirées de la carrière du journaliste Hassen Ben Ahmed : presse, télévision, festivals et sport.",
       },
-      { property: "og:title", content: "Archives — Hassen Ben Ahmed" },
+      { property: "og:title", content: "Archives - Hassen Ben Ahmed" },
       { property: "og:description", content: "Photos, vidéos et anecdotes d'une longue carrière de journaliste." },
     ],
   }),
