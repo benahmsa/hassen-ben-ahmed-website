@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { useLanguage } from "@/lib/i18n";
 import { PostsManager } from "@/components/admin/PostsManager";
+import { InterviewsManager } from "@/components/admin/InterviewsManager";
 import { NewsManager } from "@/components/admin/NewsManager";
 import { MediaManager } from "@/components/admin/MediaManager";
 import { BioManager } from "@/components/admin/BioManager";
