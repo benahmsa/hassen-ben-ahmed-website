@@ -54,6 +54,8 @@ function PressPage() {
   const items = useSuspenseQuery(pressQuery).data as Item[];
   const { t, lang } = useLanguage();
   const [selected, setSelected] = useState<Item | null>(null);
+  const [page, setPage] = useState(1);
+  const { pageItems, totalPages, current } = usePaged(items, page);
 
   return (
     <SiteLayout>
@@ -62,34 +64,37 @@ function PressPage() {
         {items.length === 0 ? (
           <p className="text-muted-foreground">{t("noContent")}</p>
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item) => {
-              const caption = localized(item, "caption", lang);
-              return (
-                <figure
-                  key={item.id}
-                  className="flex flex-col overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-card)]"
-                >
-                  <button
-                    className="block w-full bg-muted"
-                    onClick={() => setSelected(item)}
-                    aria-label={caption}
+          <>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {pageItems.map((item) => {
+                const caption = localized(item, "caption", lang);
+                return (
+                  <figure
+                    key={item.id}
+                    className="flex flex-col overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-card)]"
                   >
-                    <img
-                      src={item.thumbnail_url || item.url}
-                      alt={caption}
-                      loading="lazy"
-                      className="h-72 w-full object-cover object-top transition-transform duration-300 hover:scale-[1.02]"
-                    />
-                  </button>
-                  <figcaption className="border-t border-border p-4 text-sm leading-relaxed text-muted-foreground">
-                    <span className="kicker me-2">{t("articleLabel")}</span>
-                    {caption}
-                  </figcaption>
-                </figure>
-              );
-            })}
-          </div>
+                    <button
+                      className="block w-full bg-muted"
+                      onClick={() => setSelected(item)}
+                      aria-label={caption}
+                    >
+                      <img
+                        src={item.thumbnail_url || item.url}
+                        alt={caption}
+                        loading="lazy"
+                        className="h-72 w-full object-cover object-top transition-transform duration-300 hover:scale-[1.02]"
+                      />
+                    </button>
+                    <figcaption className="border-t border-border p-4 text-sm leading-relaxed text-muted-foreground">
+                      <span className="kicker me-2">{t("articleLabel")}</span>
+                      {caption}
+                    </figcaption>
+                  </figure>
+                );
+              })}
+            </div>
+            <Pagination page={current} totalPages={totalPages} onChange={setPage} />
+          </>
         )}
       </div>
 
