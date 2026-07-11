@@ -52,6 +52,7 @@ export type Database = {
           description_fr: string
           id: string
           published: boolean
+          published_at: string | null
           sort_order: number
           title_ar: string
           title_en: string
@@ -66,6 +67,7 @@ export type Database = {
           description_fr?: string
           id?: string
           published?: boolean
+          published_at?: string | null
           sort_order?: number
           title_ar?: string
           title_en?: string
@@ -80,6 +82,7 @@ export type Database = {
           description_fr?: string
           id?: string
           published?: boolean
+          published_at?: string | null
           sort_order?: number
           title_ar?: string
           title_en?: string

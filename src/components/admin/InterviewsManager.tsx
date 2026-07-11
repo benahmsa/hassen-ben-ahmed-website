@@ -11,6 +11,7 @@ type Row = {
   description_ar: string; description_fr: string; description_en: string;
   published: boolean;
   sort_order: number;
+  published_at: string | null;
   created_at: string;
 };
 
@@ -45,7 +46,7 @@ export function InterviewsManager() {
       const { data, error } = await supabase
         .from("interviews")
         .select("*")
-        .order("sort_order", { ascending: true })
+        .order("published_at", { ascending: false, nullsFirst: false })
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data as Row[];
@@ -57,9 +58,17 @@ export function InterviewsManager() {
   const [title, setTitle] = useState<TriValue>(emptyTri());
   const [description, setDescription] = useState<TriValue>(emptyTri());
   const [sortOrder, setSortOrder] = useState(0);
+  const [publishedAt, setPublishedAt] = useState("");
   const [published, setPublished] = useState(true);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+
+  const toLocalInput = (iso: string | null) => {
+    if (!iso) return "";
+    const d = new Date(iso);
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  };
 
   const openNew = () => {
     setEditing("new");
@@ -67,6 +76,7 @@ export function InterviewsManager() {
     setTitle(emptyTri());
     setDescription(emptyTri());
     setSortOrder(0);
+    setPublishedAt(toLocalInput(new Date().toISOString()));
     setPublished(true);
     setErr(null);
   };
@@ -76,6 +86,7 @@ export function InterviewsManager() {
     setTitle({ ar: r.title_ar, fr: r.title_fr, en: r.title_en });
     setDescription({ ar: r.description_ar, fr: r.description_fr, en: r.description_en });
     setSortOrder(r.sort_order);
+    setPublishedAt(toLocalInput(r.published_at));
     setPublished(r.published);
     setErr(null);
   };
@@ -94,6 +105,7 @@ export function InterviewsManager() {
       description_ar: description.ar, description_fr: description.fr, description_en: description.en,
       sort_order: sortOrder,
       published,
+      published_at: publishedAt ? new Date(publishedAt).toISOString() : null,
     };
     const res =
       editing === "new"
@@ -147,6 +159,15 @@ export function InterviewsManager() {
 
         <TriTextField label="Titre / العنوان" value={title} onChange={setTitle} />
         <TriTextField label="Description / الوصف" value={description} onChange={setDescription} rows={5} />
+
+        <Field label="Date de publication YouTube / تاريخ النشر على يوتيوب">
+          <input
+            type="datetime-local"
+            className={inputCls}
+            value={publishedAt}
+            onChange={(e) => setPublishedAt(e.target.value)}
+          />
+        </Field>
 
         <Field label="Ordre d'affichage / الترتيب">
           <input

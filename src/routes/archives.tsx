@@ -16,7 +16,6 @@ const mediaQuery = queryOptions({
       .select("*")
       .eq("published", true)
       .in("media_type", ["photo", "video"])
-      .order("sort_order")
       .order("created_at", { ascending: false });
     return data ?? [];
   },

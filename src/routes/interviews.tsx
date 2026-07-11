@@ -11,9 +11,9 @@ const interviewsQuery = queryOptions({
   queryFn: async () => {
     const { data, error } = await supabase
       .from("interviews")
-      .select("id, youtube_id, title_ar, title_fr, title_en, description_ar, description_fr, description_en, created_at")
+      .select("id, youtube_id, title_ar, title_fr, title_en, description_ar, description_fr, description_en, published_at, created_at")
       .eq("published", true)
-      .order("sort_order", { ascending: true })
+      .order("published_at", { ascending: false, nullsFirst: false })
       .order("created_at", { ascending: false });
     if (error) throw error;
     return data ?? [];
