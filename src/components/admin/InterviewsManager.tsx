@@ -46,7 +46,7 @@ export function InterviewsManager() {
       const { data, error } = await supabase
         .from("interviews")
         .select("*")
-        .order("sort_order", { ascending: true })
+        .order("published_at", { ascending: false, nullsFirst: false })
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data as Row[];
