@@ -29,19 +29,42 @@ export function SiteLayout({ children }: { children: ReactNode }) {
     <div dir={dir} className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
         <div className="container-site flex flex-col gap-2 py-3 lg:h-16 lg:flex-row lg:items-center lg:justify-between lg:gap-4 lg:py-0">
-          {/* Mobile: menu edge-start, title centered, langs edge-end. Desktop: title, nav, langs in one row. */}
+          {/* Mobile: controls (menu + lang) at start, title at end. Desktop: title, nav, langs at end. */}
           <div className="order-1 flex items-center justify-between gap-2 lg:order-none lg:contents">
-            <button
-              className="rounded-md p-2 text-foreground lg:hidden"
-              onClick={() => setOpen((v) => !v)}
-              aria-label="Menu"
-            >
-              {open ? <X size={22} /> : <Menu size={22} />}
-            </button>
+            <div className="flex items-center gap-1 lg:order-3">
+              <button
+                className="rounded-md p-2 text-foreground lg:hidden"
+                onClick={() => setOpen((v) => !v)}
+                aria-label="Menu"
+              >
+                {open ? <X size={22} /> : <Menu size={22} />}
+              </button>
+
+              <div className="relative">
+                <select
+                  aria-label="Language"
+                  value={lang}
+                  onChange={(e) => setLang(e.target.value as Lang)}
+                  className="appearance-none rounded-md border border-border bg-card px-3 py-1.5 pe-7 text-xs font-semibold text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"
+                >
+                  {LANGS.map((l) => (
+                    <option key={l.code} value={l.code}>
+                      {l.label}
+                    </option>
+                  ))}
+                </select>
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-y-0 end-2 flex items-center text-muted-foreground"
+                >
+                  ▾
+                </span>
+              </div>
+            </div>
 
             <Link
               to="/"
-              className="block min-w-0 flex-1 text-center lg:flex-none lg:text-start"
+              className="block min-w-0 text-end lg:order-1 lg:flex-none lg:text-start"
             >
               <span className="block font-display text-lg font-bold leading-tight text-foreground sm:text-xl">
                 {t("siteName")}
@@ -51,7 +74,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               </span>
             </Link>
 
-            <nav className="hidden items-center gap-6 lg:flex">
+            <nav className="hidden items-center gap-6 lg:order-2 lg:flex">
               {NAV.map((item) => (
                 <Link
                   key={item.to}
@@ -64,27 +87,6 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                 </Link>
               ))}
             </nav>
-
-            <div className="relative">
-              <select
-                aria-label="Language"
-                value={lang}
-                onChange={(e) => setLang(e.target.value as Lang)}
-                className="appearance-none rounded-md border border-border bg-card px-3 py-1.5 pe-7 text-xs font-semibold text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"
-              >
-                {LANGS.map((l) => (
-                  <option key={l.code} value={l.code}>
-                    {l.label}
-                  </option>
-                ))}
-              </select>
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 end-2 flex items-center text-muted-foreground"
-              >
-                ▾
-              </span>
-            </div>
           </div>
         </div>
 
