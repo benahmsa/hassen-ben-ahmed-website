@@ -37,9 +37,11 @@ export const Route = createFileRoute("/interviews")({
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(interviewsQuery),
   component: InterviewsPage,
-  errorComponent: ({ error }) => (
+  errorComponent: () => (
     <SiteLayout>
-      <div className="container-site py-16 text-center text-destructive">{error.message}</div>
+      <div className="container-site py-16 text-center text-muted-foreground">
+        Impossible de charger les interviews pour le moment. Merci de réessayer plus tard.
+      </div>
     </SiteLayout>
   ),
   notFoundComponent: () => (
