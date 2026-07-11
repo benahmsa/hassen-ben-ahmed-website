@@ -1,24 +1,186 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { SiteLayout } from "@/components/site/SiteLayout";
+import { useLanguage, localized, formatDate } from "@/lib/i18n";
+import heroImg from "@/assets/hero-press.jpg";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
+const homeQuery = queryOptions({
+  queryKey: ["home-data"],
+  queryFn: async () => {
+    const [posts, news, media] = await Promise.all([
+      supabase
+        .from("posts")
+        .select("id, slug, title_ar, title_fr, title_en, excerpt_ar, excerpt_fr, excerpt_en, cover_url, published_at, created_at")
+        .eq("published", true)
+        .order("published_at", { ascending: false, nullsFirst: false })
+        .limit(3),
+      supabase
+        .from("news_items")
+        .select("id, title_ar, title_fr, title_en, content_ar, content_fr, content_en, created_at")
+        .eq("published", true)
+        .order("created_at", { ascending: false })
+        .limit(3),
+      supabase
+        .from("media_items")
+        .select("id, media_type, url, thumbnail_url, caption_ar, caption_fr, caption_en")
+        .eq("published", true)
+        .eq("media_type", "photo")
+        .order("sort_order")
+        .limit(4),
+    ]);
+    return {
+      posts: posts.data ?? [],
+      news: news.data ?? [],
+      media: media.data ?? [],
+    };
+  },
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+export const Route = createFileRoute("/")({
+  loader: ({ context }) => context.queryClient.ensureQueryData(homeQuery),
+  component: HomePage,
+});
+
+function HomePage() {
+  const { data } = useSuspenseQuery(homeQuery);
+  const { t, lang } = useLanguage();
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <SiteLayout>
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-border">
+        <img
+          src={heroImg}
+          alt="Bureau de presse — machine à écrire, micro et journaux"
+          width={1920}
+          height={1088}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/55 to-background/90" />
+        <div className="container-site relative flex min-h-[70vh] flex-col justify-center py-20">
+          <p className="kicker mb-4">{t("tagline")}</p>
+          <h1 className="max-w-3xl font-display text-4xl font-bold leading-tight md:text-6xl">
+            {t("heroTitle")}
+          </h1>
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-foreground/80">
+            {t("heroText")}
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              to="/biography"
+              className="inline-flex items-center rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-transform hover:scale-[1.02]"
+            >
+              {t("readBio")}
+            </Link>
+            <Link
+              to="/blog"
+              className="inline-flex items-center rounded-md border border-foreground/30 bg-card/70 px-6 py-3 text-sm font-semibold text-foreground backdrop-blur transition-colors hover:border-primary hover:text-primary"
+            >
+              {t("navBlog")}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Latest posts */}
+      <section className="container-site py-14">
+        <div className="rule-top flex items-baseline justify-between pt-4">
+          <h2 className="font-display text-3xl font-bold">{t("latestPosts")}</h2>
+          <Link to="/blog" className="text-sm font-semibold text-primary hover:underline">
+            {t("viewAll")} →
+          </Link>
+        </div>
+        {data.posts.length === 0 ? (
+          <p className="mt-8 text-muted-foreground">{t("noContent")}</p>
+        ) : (
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {data.posts.map((post) => (
+              <Link
+                key={post.id}
+                to="/blog/$slug"
+                params={{ slug: post.slug }}
+                className="group flex flex-col overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-card)] transition-shadow hover:shadow-[var(--shadow-card-hover)]"
+              >
+                {post.cover_url && (
+                  <img
+                    src={post.cover_url}
+                    alt={localized(post, "title", lang)}
+                    loading="lazy"
+                    className="aspect-[16/9] w-full object-cover"
+                  />
+                )}
+                <div className="flex flex-1 flex-col p-5">
+                  <p className="text-xs text-muted-foreground">
+                    {formatDate(post.published_at ?? post.created_at, lang)}
+                  </p>
+                  <h3 className="mt-2 font-display text-xl font-bold leading-snug group-hover:text-primary">
+                    {localized(post, "title", lang)}
+                  </h3>
+                  <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+                    {localized(post, "excerpt", lang)}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* News */}
+      <section className="border-y border-border bg-card">
+        <div className="container-site py-14">
+          <div className="rule-top flex items-baseline justify-between pt-4">
+            <h2 className="font-display text-3xl font-bold">{t("latestNews")}</h2>
+            <Link to="/news" className="text-sm font-semibold text-primary hover:underline">
+              {t("viewAll")} →
+            </Link>
+          </div>
+          {data.news.length === 0 ? (
+            <p className="mt-8 text-muted-foreground">{t("noContent")}</p>
+          ) : (
+            <div className="mt-8 space-y-4">
+              {data.news.map((n) => (
+                <div key={n.id} className="rounded-md border-s-4 border-primary bg-background p-5">
+                  <p className="text-xs text-muted-foreground">{formatDate(n.created_at, lang)}</p>
+                  <h3 className="mt-1 font-display text-lg font-bold">
+                    {localized(n, "title", lang)}
+                  </h3>
+                  <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                    {localized(n, "content", lang)}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Archives preview */}
+      <section className="container-site py-14">
+        <div className="rule-top flex items-baseline justify-between pt-4">
+          <h2 className="font-display text-3xl font-bold">{t("fromArchives")}</h2>
+          <Link to="/archives" className="text-sm font-semibold text-primary hover:underline">
+            {t("viewAll")} →
+          </Link>
+        </div>
+        {data.media.length === 0 ? (
+          <p className="mt-8 text-muted-foreground">{t("noContent")}</p>
+        ) : (
+          <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+            {data.media.map((m) => (
+              <Link key={m.id} to="/archives" className="group overflow-hidden rounded-lg">
+                <img
+                  src={m.thumbnail_url || m.url}
+                  alt={localized(m, "caption", lang)}
+                  loading="lazy"
+                  className="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
+    </SiteLayout>
   );
 }
