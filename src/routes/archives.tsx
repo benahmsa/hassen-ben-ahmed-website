@@ -53,6 +53,8 @@ function ArchivesPage() {
   const items = useSuspenseQuery(mediaQuery).data as MediaItem[];
   const { t, lang } = useLanguage();
   const [selected, setSelected] = useState<MediaItem | null>(null);
+  const [page, setPage] = useState(1);
+  const { pageItems, totalPages, current } = usePaged(items, page);
 
   return (
     <SiteLayout>
@@ -61,59 +63,62 @@ function ArchivesPage() {
         {items.length === 0 ? (
           <p className="text-muted-foreground">{t("noContent")}</p>
         ) : (
-          <div className="columns-1 gap-5 sm:columns-2 lg:columns-3 [&>*]:mb-5">
-            {items.map((item) => {
-              const caption = localized(item, "caption", lang);
-              const embed = item.media_type === "video" ? toEmbedUrl(item.url) : null;
-              return (
-                <figure
-                  key={item.id}
-                  className="break-inside-avoid overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-card)]"
-                >
-                  {item.media_type === "video" ? (
-                    embed ? (
-                      <div className="aspect-video w-full">
-                        <iframe
-                          src={embed}
-                          title={caption || t("videoLabel")}
-                          className="h-full w-full"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          loading="lazy"
-                        />
-                      </div>
+          <>
+            <div className="columns-1 gap-5 sm:columns-2 lg:columns-3 [&>*]:mb-5">
+              {pageItems.map((item) => {
+                const caption = localized(item, "caption", lang);
+                const embed = item.media_type === "video" ? toEmbedUrl(item.url) : null;
+                return (
+                  <figure
+                    key={item.id}
+                    className="break-inside-avoid overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-card)]"
+                  >
+                    {item.media_type === "video" ? (
+                      embed ? (
+                        <div className="aspect-video w-full">
+                          <iframe
+                            src={embed}
+                            title={caption || t("videoLabel")}
+                            className="h-full w-full"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            loading="lazy"
+                          />
+                        </div>
+                      ) : (
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex aspect-video w-full items-center justify-center bg-foreground/90 text-primary-foreground"
+                        >
+                          <Play size={40} />
+                        </a>
+                      )
                     ) : (
-                      <a
-                        href={item.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex aspect-video w-full items-center justify-center bg-foreground/90 text-primary-foreground"
-                      >
-                        <Play size={40} />
-                      </a>
-                    )
-                  ) : (
-                    <button className="block w-full" onClick={() => setSelected(item)}>
-                      <img
-                        src={item.thumbnail_url || item.url}
-                        alt={caption}
-                        loading="lazy"
-                        className="w-full object-cover transition-transform duration-300 hover:scale-[1.02]"
-                      />
-                    </button>
-                  )}
-                  {caption && (
-                    <figcaption className="border-t border-border p-4 text-sm leading-relaxed text-muted-foreground">
-                      <span className="kicker me-2">
-                        {item.media_type === "video" ? t("videoLabel") : t("photoLabel")}
-                      </span>
-                      {caption}
-                    </figcaption>
-                  )}
-                </figure>
-              );
-            })}
-          </div>
+                      <button className="block w-full" onClick={() => setSelected(item)}>
+                        <img
+                          src={item.thumbnail_url || item.url}
+                          alt={caption}
+                          loading="lazy"
+                          className="w-full object-cover transition-transform duration-300 hover:scale-[1.02]"
+                        />
+                      </button>
+                    )}
+                    {caption && (
+                      <figcaption className="border-t border-border p-4 text-sm leading-relaxed text-muted-foreground">
+                        <span className="kicker me-2">
+                          {item.media_type === "video" ? t("videoLabel") : t("photoLabel")}
+                        </span>
+                        {caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                );
+              })}
+            </div>
+            <Pagination page={current} totalPages={totalPages} onChange={setPage} />
+          </>
         )}
       </div>
 
