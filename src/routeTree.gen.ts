@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BiographyRouteImport } from './routes/biography'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ArchivesRouteImport } from './routes/archives'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
@@ -30,6 +31,11 @@ const ContactRoute = ContactRouteImport.update({
 const BiographyRoute = BiographyRouteImport.update({
   id: '/biography',
   path: '/biography',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArchivesRoute = ArchivesRouteImport.update({
@@ -56,6 +62,7 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/archives': typeof ArchivesRoute
+  '/auth': typeof AuthRoute
   '/biography': typeof BiographyRoute
   '/contact': typeof ContactRoute
   '/news': typeof NewsRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/archives': typeof ArchivesRoute
+  '/auth': typeof AuthRoute
   '/biography': typeof BiographyRoute
   '/contact': typeof ContactRoute
   '/news': typeof NewsRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/archives': typeof ArchivesRoute
+  '/auth': typeof AuthRoute
   '/biography': typeof BiographyRoute
   '/contact': typeof ContactRoute
   '/news': typeof NewsRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/archives'
+    | '/auth'
     | '/biography'
     | '/contact'
     | '/news'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/archives'
+    | '/auth'
     | '/biography'
     | '/contact'
     | '/news'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/archives'
+    | '/auth'
     | '/biography'
     | '/contact'
     | '/news'
@@ -114,6 +126,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ArchivesRoute: typeof ArchivesRoute
+  AuthRoute: typeof AuthRoute
   BiographyRoute: typeof BiographyRoute
   ContactRoute: typeof ContactRoute
   NewsRoute: typeof NewsRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/biography'
       fullPath: '/biography'
       preLoaderRoute: typeof BiographyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/archives': {
@@ -178,6 +198,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ArchivesRoute: ArchivesRoute,
+  AuthRoute: AuthRoute,
   BiographyRoute: BiographyRoute,
   ContactRoute: ContactRoute,
   NewsRoute: NewsRoute,
