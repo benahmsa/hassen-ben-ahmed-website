@@ -160,6 +160,15 @@ export function InterviewsManager() {
         <TriTextField label="Titre / العنوان" value={title} onChange={setTitle} />
         <TriTextField label="Description / الوصف" value={description} onChange={setDescription} rows={5} />
 
+        <Field label="Date de publication YouTube / تاريخ النشر على يوتيوب">
+          <input
+            type="datetime-local"
+            className={inputCls}
+            value={publishedAt}
+            onChange={(e) => setPublishedAt(e.target.value)}
+          />
+        </Field>
+
         <Field label="Ordre d'affichage / الترتيب">
           <input
             type="number"
