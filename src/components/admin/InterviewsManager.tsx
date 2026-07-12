@@ -62,6 +62,7 @@ export function InterviewsManager() {
   const [sortOrder, setSortOrder] = useState(0);
   const [publishedAt, setPublishedAt] = useState("");
   const [published, setPublished] = useState(true);
+  const [category, setCategory] = useState<Category>("media");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -80,6 +81,7 @@ export function InterviewsManager() {
     setSortOrder(0);
     setPublishedAt(toLocalInput(new Date().toISOString()));
     setPublished(true);
+    setCategory("media");
     setErr(null);
   };
   const openEdit = (r: Row) => {
@@ -90,6 +92,7 @@ export function InterviewsManager() {
     setSortOrder(r.sort_order);
     setPublishedAt(toLocalInput(r.published_at));
     setPublished(r.published);
+    setCategory(r.category ?? "media");
     setErr(null);
   };
 
@@ -107,6 +110,7 @@ export function InterviewsManager() {
       description_ar: description.ar, description_fr: description.fr, description_en: description.en,
       sort_order: sortOrder,
       published,
+      category,
       published_at: publishedAt ? new Date(publishedAt).toISOString() : null,
     };
     const res =
