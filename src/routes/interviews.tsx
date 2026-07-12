@@ -1,24 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
-import { Pagination, usePaged } from "@/components/site/Pagination";
-import { useLanguage, localized } from "@/lib/i18n";
-
-const interviewsQuery = queryOptions({
-  queryKey: ["interviews-list"],
-  queryFn: async () => {
-    const { data, error } = await supabase
-      .from("interviews")
-      .select("id, youtube_id, title_ar, title_fr, title_en, description_ar, description_fr, description_en, published_at, created_at")
-      .eq("published", true)
-      .order("published_at", { ascending: false, nullsFirst: false })
-      .order("created_at", { ascending: false });
-    if (error) throw error;
-    return data ?? [];
-  },
-});
+import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/interviews")({
   head: () => ({
@@ -27,18 +9,17 @@ export const Route = createFileRoute("/interviews")({
       {
         name: "description",
         content:
-          "Entretiens télévisés et interviews vidéo avec le journaliste Hassen Ben Ahmed.",
+          "Prises de parole et invitations médias du journaliste Hassen Ben Ahmed.",
       },
       { property: "og:title", content: "Interviews - Hassen Ben Ahmed" },
       {
         property: "og:description",
         content:
-          "Entretiens télévisés et interviews vidéo avec le journaliste Hassen Ben Ahmed.",
+          "Prises de parole et invitations médias du journaliste Hassen Ben Ahmed.",
       },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(interviewsQuery),
-  component: InterviewsPage,
+  component: InterviewsLayout,
   errorComponent: () => (
     <SiteLayout>
       <div className="container-site py-16 text-center text-muted-foreground">
@@ -53,11 +34,14 @@ export const Route = createFileRoute("/interviews")({
   ),
 });
 
-function InterviewsPage() {
-  const { data } = useSuspenseQuery(interviewsQuery);
-  const { t, lang } = useLanguage();
-  const [page, setPage] = useState(1);
-  const { pageItems, totalPages, current } = usePaged(data, page);
+function InterviewsLayout() {
+  const { t } = useLanguage();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  const tabs = [
+    { to: "/interviews/commentary", label: t("navInterviewsCommentary") },
+    { to: "/interviews/media", label: t("navInterviewsMedia") },
+  ] as const;
 
   return (
     <SiteLayout>
@@ -67,46 +51,25 @@ function InterviewsPage() {
         intro={t("interviewsIntro")}
       />
       <div className="container-site pb-16">
-        {data.length === 0 ? (
-          <p className="text-muted-foreground">{t("noContent")}</p>
-        ) : (
-          <>
-            <div className="grid gap-10">
-              {pageItems.map((v) => {
-                const title = localized(v, "title", lang);
-                const description = localized(v, "description", lang);
-                return (
-                  <article
-                    key={v.id}
-                    className="overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-card)]"
-                  >
-                    <div className="relative aspect-video w-full bg-black">
-                      <iframe
-                        src={`https://www.youtube-nocookie.com/embed/${v.youtube_id}`}
-                        title={title || "Interview"}
-                        loading="lazy"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className="absolute inset-0 h-full w-full"
-                      />
-                    </div>
-                    <div className="p-5 md:p-6">
-                      {title && (
-                        <h2 className="font-display text-xl font-bold md:text-2xl">{title}</h2>
-                      )}
-                      {description && (
-                        <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground md:text-base">
-                          {description}
-                        </p>
-                      )}
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-            <Pagination page={current} totalPages={totalPages} onChange={setPage} />
-          </>
-        )}
+        <div className="mb-8 flex flex-wrap gap-2 border-b border-border">
+          {tabs.map((tab) => {
+            const active = pathname === tab.to;
+            return (
+              <Link
+                key={tab.to}
+                to={tab.to}
+                className={`-mb-px border-b-2 px-4 py-2 text-sm font-semibold transition-colors ${
+                  active
+                    ? "border-primary text-primary"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {tab.label}
+              </Link>
+            );
+          })}
+        </div>
+        <Outlet />
       </div>
     </SiteLayout>
   );

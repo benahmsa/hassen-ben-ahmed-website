@@ -19,7 +19,10 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ArchivesRouteImport } from './routes/archives'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as InterviewsIndexRouteImport } from './routes/interviews.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as InterviewsMediaRouteImport } from './routes/interviews.media'
+import { Route as InterviewsCommentaryRouteImport } from './routes/interviews.commentary'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -72,10 +75,25 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InterviewsIndexRoute = InterviewsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => InterviewsRoute,
+} as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const InterviewsMediaRoute = InterviewsMediaRouteImport.update({
+  id: '/media',
+  path: '/media',
+  getParentRoute: () => InterviewsRoute,
+} as any)
+const InterviewsCommentaryRoute = InterviewsCommentaryRouteImport.update({
+  id: '/commentary',
+  path: '/commentary',
+  getParentRoute: () => InterviewsRoute,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
@@ -90,12 +108,15 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/biography': typeof BiographyRoute
   '/contact': typeof ContactRoute
-  '/interviews': typeof InterviewsRoute
+  '/interviews': typeof InterviewsRouteWithChildren
   '/news': typeof NewsRoute
   '/press': typeof PressRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/interviews/commentary': typeof InterviewsCommentaryRoute
+  '/interviews/media': typeof InterviewsMediaRoute
   '/blog/': typeof BlogIndexRoute
+  '/interviews/': typeof InterviewsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -104,12 +125,14 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/biography': typeof BiographyRoute
   '/contact': typeof ContactRoute
-  '/interviews': typeof InterviewsRoute
   '/news': typeof NewsRoute
   '/press': typeof PressRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/interviews/commentary': typeof InterviewsCommentaryRoute
+  '/interviews/media': typeof InterviewsMediaRoute
   '/blog': typeof BlogIndexRoute
+  '/interviews': typeof InterviewsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -119,12 +142,15 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/biography': typeof BiographyRoute
   '/contact': typeof ContactRoute
-  '/interviews': typeof InterviewsRoute
+  '/interviews': typeof InterviewsRouteWithChildren
   '/news': typeof NewsRoute
   '/press': typeof PressRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/interviews/commentary': typeof InterviewsCommentaryRoute
+  '/interviews/media': typeof InterviewsMediaRoute
   '/blog/': typeof BlogIndexRoute
+  '/interviews/': typeof InterviewsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -140,7 +166,10 @@ export interface FileRouteTypes {
     | '/press'
     | '/sitemap.xml'
     | '/blog/$slug'
+    | '/interviews/commentary'
+    | '/interviews/media'
     | '/blog/'
+    | '/interviews/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -149,12 +178,14 @@ export interface FileRouteTypes {
     | '/auth'
     | '/biography'
     | '/contact'
-    | '/interviews'
     | '/news'
     | '/press'
     | '/sitemap.xml'
     | '/blog/$slug'
+    | '/interviews/commentary'
+    | '/interviews/media'
     | '/blog'
+    | '/interviews'
   id:
     | '__root__'
     | '/'
@@ -168,7 +199,10 @@ export interface FileRouteTypes {
     | '/press'
     | '/sitemap.xml'
     | '/blog/$slug'
+    | '/interviews/commentary'
+    | '/interviews/media'
     | '/blog/'
+    | '/interviews/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -178,7 +212,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BiographyRoute: typeof BiographyRoute
   ContactRoute: typeof ContactRoute
-  InterviewsRoute: typeof InterviewsRoute
+  InterviewsRoute: typeof InterviewsRouteWithChildren
   NewsRoute: typeof NewsRoute
   PressRoute: typeof PressRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -258,12 +292,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/interviews/': {
+      id: '/interviews/'
+      path: '/'
+      fullPath: '/interviews/'
+      preLoaderRoute: typeof InterviewsIndexRouteImport
+      parentRoute: typeof InterviewsRoute
+    }
     '/blog/': {
       id: '/blog/'
       path: '/blog'
       fullPath: '/blog/'
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/interviews/media': {
+      id: '/interviews/media'
+      path: '/media'
+      fullPath: '/interviews/media'
+      preLoaderRoute: typeof InterviewsMediaRouteImport
+      parentRoute: typeof InterviewsRoute
+    }
+    '/interviews/commentary': {
+      id: '/interviews/commentary'
+      path: '/commentary'
+      fullPath: '/interviews/commentary'
+      preLoaderRoute: typeof InterviewsCommentaryRouteImport
+      parentRoute: typeof InterviewsRoute
     }
     '/blog/$slug': {
       id: '/blog/$slug'
@@ -275,6 +330,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface InterviewsRouteChildren {
+  InterviewsCommentaryRoute: typeof InterviewsCommentaryRoute
+  InterviewsMediaRoute: typeof InterviewsMediaRoute
+  InterviewsIndexRoute: typeof InterviewsIndexRoute
+}
+
+const InterviewsRouteChildren: InterviewsRouteChildren = {
+  InterviewsCommentaryRoute: InterviewsCommentaryRoute,
+  InterviewsMediaRoute: InterviewsMediaRoute,
+  InterviewsIndexRoute: InterviewsIndexRoute,
+}
+
+const InterviewsRouteWithChildren = InterviewsRoute._addFileChildren(
+  InterviewsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
@@ -282,7 +353,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BiographyRoute: BiographyRoute,
   ContactRoute: ContactRoute,
-  InterviewsRoute: InterviewsRoute,
+  InterviewsRoute: InterviewsRouteWithChildren,
   NewsRoute: NewsRoute,
   PressRoute: PressRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
@@ -292,13 +363,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

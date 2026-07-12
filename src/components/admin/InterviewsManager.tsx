@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { TriTextField, inputCls, btnPrimary, btnGhost, emptyTri, Field, type TriValue } from "./ui";
 import { Trash2, Pencil, Plus } from "lucide-react";
 
+type Category = "commentary" | "media";
 type Row = {
   id: string;
   youtube_id: string;
@@ -13,6 +14,7 @@ type Row = {
   sort_order: number;
   published_at: string | null;
   created_at: string;
+  category: Category;
 };
 
 // Extract YouTube video id from a full URL or return the id as-is.
@@ -60,6 +62,7 @@ export function InterviewsManager() {
   const [sortOrder, setSortOrder] = useState(0);
   const [publishedAt, setPublishedAt] = useState("");
   const [published, setPublished] = useState(true);
+  const [category, setCategory] = useState<Category>("media");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -78,6 +81,7 @@ export function InterviewsManager() {
     setSortOrder(0);
     setPublishedAt(toLocalInput(new Date().toISOString()));
     setPublished(true);
+    setCategory("media");
     setErr(null);
   };
   const openEdit = (r: Row) => {
@@ -88,6 +92,7 @@ export function InterviewsManager() {
     setSortOrder(r.sort_order);
     setPublishedAt(toLocalInput(r.published_at));
     setPublished(r.published);
+    setCategory(r.category ?? "media");
     setErr(null);
   };
 
@@ -105,6 +110,7 @@ export function InterviewsManager() {
       description_ar: description.ar, description_fr: description.fr, description_en: description.en,
       sort_order: sortOrder,
       published,
+      category,
       published_at: publishedAt ? new Date(publishedAt).toISOString() : null,
     };
     const res =
@@ -178,6 +184,18 @@ export function InterviewsManager() {
           />
         </Field>
 
+        <Field label="Catégorie / التصنيف">
+          <select
+            className={inputCls}
+            value={category}
+            onChange={(e) => setCategory(e.target.value as Category)}
+          >
+            <option value="media">Invitations médias / الظهور الإعلامي</option>
+            <option value="commentary">Prises de parole / مداخلات</option>
+          </select>
+        </Field>
+
+
         <label className="flex items-center gap-2 text-sm font-medium">
           <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} />
           Publié / منشور
@@ -208,7 +226,7 @@ export function InterviewsManager() {
                   {r.title_ar || r.title_fr || r.title_en || r.youtube_id}
                 </p>
                 <p dir="ltr" className="truncate text-xs text-muted-foreground">
-                  {r.youtube_id} · {r.published ? "✓ Publié" : "Brouillon"}
+                  {r.youtube_id} · {r.category === "commentary" ? "Prises de parole" : "Invitations médias"} · {r.published ? "✓ Publié" : "Brouillon"}
                 </p>
               </div>
             </div>
