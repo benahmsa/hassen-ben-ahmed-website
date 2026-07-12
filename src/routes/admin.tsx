@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -101,12 +102,17 @@ function AdminPage() {
             <h1 className="font-display text-3xl font-bold">{t("admin")}</h1>
             <p dir="ltr" className="text-sm text-muted-foreground">{session.user.email}</p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex items-center gap-3">
             <Link to="/" className="text-sm font-semibold text-primary hover:underline">
               {t("navHome")} →
             </Link>
-            <button onClick={signOut} className="text-sm font-semibold text-muted-foreground hover:text-primary">
-              {t("signOut")}
+            <button
+              onClick={signOut}
+              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
+              title={t("signOut")}
+            >
+              <LogOut className="h-4 w-4" />
+              <span>{t("signOut")}</span>
             </button>
           </div>
         </div>
