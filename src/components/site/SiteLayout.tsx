@@ -30,7 +30,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
         <div className="container-site grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-3 lg:flex lg:h-16 lg:justify-between lg:py-0">
           <Link to="/" className="block min-w-0">
-            <span className="block font-display text-lg font-bold leading-tight text-foreground sm:text-xl">
+            <span className="block font-display text-xl font-bold leading-tight text-foreground sm:text-2xl">
               {t("siteName")}
             </span>
             <span className="block text-[11px] leading-snug tracking-wide text-muted-foreground">
