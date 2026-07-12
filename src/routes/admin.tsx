@@ -12,7 +12,6 @@ import { MediaManager } from "@/components/admin/MediaManager";
 import { BioManager } from "@/components/admin/BioManager";
 import { MessagesManager } from "@/components/admin/MessagesManager";
 import { UsersManager } from "@/components/admin/UsersManager";
-import { btnPrimary } from "@/components/admin/ui";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -39,8 +38,6 @@ function AdminPage() {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const [tab, setTab] = useState<TabId>("posts");
-  const [bootstrapMsg, setBootstrapMsg] = useState<string | null>(null);
-  const [becameAdmin, setBecameAdmin] = useState(false);
 
   useEffect(() => {
     if (!loading && !session) navigate({ to: "/auth" });
@@ -59,32 +56,15 @@ function AdminPage() {
     navigate({ to: "/" });
   };
 
-  if (!isAdmin && !becameAdmin) {
-    const tryBootstrap = async () => {
-      const { data, error } = await supabase.rpc("bootstrap_first_admin");
-      if (error) {
-        setBootstrapMsg("Erreur : " + error.message);
-      } else if (data === true) {
-        setBecameAdmin(true);
-      } else {
-        setBootstrapMsg(
-          "Un administrateur existe déjà. Demandez-lui de vous ajouter. / يوجد مشرف بالفعل، اطلب منه إضافتك.",
-        );
-      }
-    };
-
+  if (!isAdmin) {
     return (
       <SiteLayout>
         <div className="container-site flex justify-center py-20">
           <div className="w-full max-w-md rounded-lg border border-border bg-card p-8 text-center shadow-[var(--shadow-card)]">
-            <h1 className="font-display text-2xl font-bold">Accès restreint / دخول مقيد</h1>
+            <h1 className="font-display text-2xl font-bold">Accès refusé / تم رفض الدخول</h1>
             <p className="mt-3 text-sm text-muted-foreground">
-              Votre compte n'a pas le rôle administrateur. Si vous êtes le premier utilisateur du site, activez votre compte administrateur ci-dessous.
+              Votre compte n'a pas les droits d'administration. / حسابك لا يملك صلاحيات الإدارة.
             </p>
-            <button className={`${btnPrimary} mt-5`} onClick={tryBootstrap}>
-              Devenir administrateur / تفعيل حساب المشرف
-            </button>
-            {bootstrapMsg && <p className="mt-3 text-sm text-muted-foreground">{bootstrapMsg}</p>}
             <button onClick={signOut} className="mt-5 block w-full text-sm text-primary hover:underline">
               {t("signOut")}
             </button>
