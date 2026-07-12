@@ -184,6 +184,18 @@ export function InterviewsManager() {
           />
         </Field>
 
+        <Field label="Catégorie / التصنيف">
+          <select
+            className={inputCls}
+            value={category}
+            onChange={(e) => setCategory(e.target.value as Category)}
+          >
+            <option value="media">Invitations médias / الظهور الإعلامي</option>
+            <option value="commentary">Prises de parole / مداخلات</option>
+          </select>
+        </Field>
+
+
         <label className="flex items-center gap-2 text-sm font-medium">
           <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} />
           Publié / منشور
@@ -214,7 +226,7 @@ export function InterviewsManager() {
                   {r.title_ar || r.title_fr || r.title_en || r.youtube_id}
                 </p>
                 <p dir="ltr" className="truncate text-xs text-muted-foreground">
-                  {r.youtube_id} · {r.published ? "✓ Publié" : "Brouillon"}
+                  {r.youtube_id} · {r.category === "commentary" ? "Prises de parole" : "Invitations médias"} · {r.published ? "✓ Publié" : "Brouillon"}
                 </p>
               </div>
             </div>
