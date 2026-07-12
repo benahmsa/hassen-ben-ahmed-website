@@ -114,10 +114,16 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           </div>
           <div className="flex flex-col items-center gap-3 text-sm text-muted-foreground md:flex-row md:items-center md:gap-5">
             <div className="flex items-center gap-5">
-              <Link to="/contact" className="hover:text-primary">
+              <Link
+                to="/contact"
+                className="underline underline-offset-4 decoration-muted-foreground/50 hover:text-primary hover:decoration-primary"
+              >
                 {t("navContact")}
               </Link>
-              <Link to="/auth" className="hover:text-primary">
+              <Link
+                to="/auth"
+                className="underline underline-offset-4 decoration-muted-foreground/50 hover:text-primary hover:decoration-primary"
+              >
                 {t("admin")}
               </Link>
             </div>
