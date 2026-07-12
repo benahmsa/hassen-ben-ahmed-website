@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { TriTextField, inputCls, btnPrimary, btnGhost, emptyTri, Field, type TriValue } from "./ui";
 import { Trash2, Pencil, Plus } from "lucide-react";
 
+type Category = "commentary" | "media";
 type Row = {
   id: string;
   youtube_id: string;
@@ -13,6 +14,7 @@ type Row = {
   sort_order: number;
   published_at: string | null;
   created_at: string;
+  category: Category;
 };
 
 // Extract YouTube video id from a full URL or return the id as-is.
