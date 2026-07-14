@@ -1,24 +1,23 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { useLanguage } from "@/lib/i18n";
+import { breadcrumbLd, buildRouteHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/interviews")({
-  head: () => ({
-    meta: [
-      { title: "Interviews / حوارات - Hassen Ben Ahmed" },
-      {
-        name: "description",
-        content:
-          "Prises de parole et invitations médias du journaliste Hassen Ben Ahmed.",
-      },
-      { property: "og:title", content: "Interviews - Hassen Ben Ahmed" },
-      {
-        property: "og:description",
-        content:
-          "Prises de parole et invitations médias du journaliste Hassen Ben Ahmed.",
-      },
-    ],
-  }),
+  head: () =>
+    buildRouteHead({
+      path: "/interviews",
+      title: "Interviews - Hassen Ben Ahmed | حوارات",
+      description:
+        "Prises de parole, entretiens télévisés et radiophoniques du journaliste Hassen Ben Ahmed.",
+      jsonLd: [
+        breadcrumbLd([
+          { name: "Accueil", path: "/" },
+          { name: "Interviews", path: "/interviews" },
+        ]),
+      ],
+    }),
+
   component: InterviewsLayout,
   errorComponent: () => (
     <SiteLayout>

@@ -4,13 +4,19 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { useLanguage } from "@/lib/i18n";
+import { buildRouteHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({
-    meta: [{ title: "Connexion - Hassen Ben Ahmed" }, { name: "robots", content: "noindex" }],
-  }),
+  head: () =>
+    buildRouteHead({
+      path: "/auth",
+      title: "Connexion - Hassen Ben Ahmed",
+      description: "Espace privé d'authentification.",
+      noindex: true,
+    }),
   component: AuthPage,
 });
+
 
 function AuthPage() {
   const { session } = useAuth();

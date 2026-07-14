@@ -38,10 +38,22 @@ const homeQuery = queryOptions({
   },
 });
 
+import { buildRouteHead, breadcrumbLd } from "@/lib/seo";
+
 export const Route = createFileRoute("/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(homeQuery),
+  head: () =>
+    buildRouteHead({
+      path: "/",
+      title: "Hassen Ben Ahmed - Journaliste | حسن بن أحمد",
+      description:
+        "Site officiel de Hassen Ben Ahmed, journaliste tunisien - arts, culture et sport. Articles, biographie, archives, interviews et actualités.",
+      ogType: "website",
+      jsonLd: [breadcrumbLd([{ name: "Accueil", path: "/" }])],
+    }),
   component: HomePage,
 });
+
 
 function HomePage() {
   const { data } = useSuspenseQuery(homeQuery);

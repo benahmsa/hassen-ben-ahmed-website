@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { Pagination, usePaged } from "@/components/site/Pagination";
 import { useLanguage, localized, formatDate } from "@/lib/i18n";
+import { breadcrumbLd, buildRouteHead } from "@/lib/seo";
+
 
 const postsQuery = queryOptions({
   queryKey: ["posts-list"],
@@ -20,20 +22,22 @@ const postsQuery = queryOptions({
 
 export const Route = createFileRoute("/blog/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(postsQuery),
-  head: () => ({
-    meta: [
-      { title: "Blog - Hassen Ben Ahmed | مدونة حسن بن أحمد" },
-      {
-        name: "description",
-        content:
-          "Articles, chroniques et prises de position du journaliste Hassen Ben Ahmed en arabe, français et anglais.",
-      },
-      { property: "og:title", content: "Blog - Hassen Ben Ahmed" },
-      { property: "og:description", content: "Articles et chroniques du journaliste Hassen Ben Ahmed." },
-    ],
-  }),
+  head: () =>
+    buildRouteHead({
+      path: "/blog",
+      title: "Blog - Hassen Ben Ahmed | مدونة حسن بن أحمد",
+      description:
+        "Articles, chroniques et prises de position du journaliste Hassen Ben Ahmed en arabe, français et anglais.",
+      jsonLd: [
+        breadcrumbLd([
+          { name: "Accueil", path: "/" },
+          { name: "Blog", path: "/blog" },
+        ]),
+      ],
+    }),
   component: BlogPage,
 });
+
 
 function BlogPage() {
   const posts = useSuspenseQuery(postsQuery).data;

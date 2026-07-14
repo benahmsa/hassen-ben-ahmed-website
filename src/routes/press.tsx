@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { useLanguage, localized } from "@/lib/i18n";
 import { Pagination, usePaged } from "@/components/site/Pagination";
+import { breadcrumbLd, buildRouteHead } from "@/lib/seo";
+
 
 const pressQuery = queryOptions({
   queryKey: ["press-list"],
@@ -22,23 +24,22 @@ const pressQuery = queryOptions({
 
 export const Route = createFileRoute("/press")({
   loader: ({ context }) => context.queryClient.ensureQueryData(pressQuery),
-  head: () => ({
-    meta: [
-      { title: "Presse - Al Bayane | Hassen Ben Ahmed" },
-      {
-        name: "description",
-        content:
-          "Sélection d'articles et d'entretiens signés Hassen Ben Ahmed, parus dans le journal tunisien Al Bayane.",
-      },
-      { property: "og:title", content: "Archives de presse - Al Bayane" },
-      {
-        property: "og:description",
-        content: "Articles et entretiens parus dans le journal tunisien Al Bayane.",
-      },
-    ],
-  }),
+  head: () =>
+    buildRouteHead({
+      path: "/press",
+      title: "Presse - Al Bayane | Hassen Ben Ahmed",
+      description:
+        "Sélection d'articles et d'entretiens signés Hassen Ben Ahmed, parus dans le journal tunisien Al Bayane.",
+      jsonLd: [
+        breadcrumbLd([
+          { name: "Accueil", path: "/" },
+          { name: "Presse", path: "/press" },
+        ]),
+      ],
+    }),
   component: PressPage,
 });
+
 
 type Item = {
   id: string;
