@@ -75,6 +75,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 
 import {
   DEFAULT_OG_IMAGE,
+  ORGANIZATION_LD,
   PERSON_LD,
   SITE_NAME,
   WEBSITE_LD,
