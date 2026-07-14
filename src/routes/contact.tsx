@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { z } from "zod";
-import { supabase } from "@/integrations/supabase/client";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { useLanguage } from "@/lib/i18n";
+import { getTurnstileSiteKey, submitContactMessage } from "@/lib/contact.functions";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -17,6 +18,7 @@ export const Route = createFileRoute("/contact")({
       { property: "og:description", content: "Formulaire de contact du journaliste Hassen Ben Ahmed." },
     ],
   }),
+  loader: () => getTurnstileSiteKey(),
   component: ContactPage,
 });
 
@@ -27,10 +29,15 @@ const schema = z.object({
   message: z.string().trim().min(1).max(5000),
 });
 
+type Status = "idle" | "sending" | "sent" | "error" | "turnstile";
+
 function ContactPage() {
   const { t } = useLanguage();
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const { siteKey } = Route.useLoaderData();
+  const [status, setStatus] = useState<Status>("idle");
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [token, setToken] = useState("");
+  const turnstileRef = useRef<TurnstileInstance | null>(null);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,13 +46,28 @@ function ContactPage() {
       setStatus("error");
       return;
     }
+    if (!token) {
+      setStatus("turnstile");
+      return;
+    }
     setStatus("sending");
-    const { error } = await supabase.from("contact_messages").insert(parsed.data);
-    if (error) {
+    try {
+      const res = await submitContactMessage({
+        data: { ...parsed.data, turnstileToken: token },
+      });
+      if (res.ok) {
+        setStatus("sent");
+        setForm({ name: "", email: "", subject: "", message: "" });
+      } else if (res.reason === "turnstile") {
+        setStatus("turnstile");
+      } else {
+        setStatus("error");
+      }
+    } catch {
       setStatus("error");
-    } else {
-      setStatus("sent");
-      setForm({ name: "", email: "", subject: "", message: "" });
+    } finally {
+      setToken("");
+      turnstileRef.current?.reset();
     }
   };
 
@@ -100,12 +122,22 @@ function ContactPage() {
               onChange={(e) => setForm({ ...form, message: e.target.value })}
             />
           </div>
+          {siteKey ? (
+            <Turnstile
+              ref={turnstileRef}
+              siteKey={siteKey}
+              onSuccess={(t) => setToken(t)}
+              onExpire={() => setToken("")}
+              onError={() => setToken("")}
+              options={{ theme: "light" }}
+            />
+          ) : null}
           <button
             type="submit"
             disabled={status === "sending"}
             className="inline-flex items-center rounded-md bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground transition-opacity disabled:opacity-60"
           >
-            {t("formSend")}
+            {status === "sending" ? "…" : t("formSend")}
           </button>
           {status === "sent" && (
             <p className="rounded-md bg-accent px-4 py-3 text-sm font-medium text-accent-foreground">
@@ -115,6 +147,11 @@ function ContactPage() {
           {status === "error" && (
             <p className="rounded-md bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive">
               {t("formError")}
+            </p>
+          )}
+          {status === "turnstile" && (
+            <p className="rounded-md bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive">
+              Veuillez confirmer que vous n'êtes pas un robot. / يرجى تأكيد أنك لست روبوتًا.
             </p>
           )}
         </form>
