@@ -3,6 +3,14 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { useLanguage, localized, formatDate } from "@/lib/i18n";
+import {
+  PERSON_LD,
+  SITE_URL,
+  absoluteUrl,
+  breadcrumbLd,
+  buildRouteHead,
+} from "@/lib/seo";
+
 
 const postQuery = (slug: string) =>
   queryOptions({
@@ -24,18 +32,58 @@ export const Route = createFileRoute("/blog/$slug")({
     if (!post) throw notFound();
     return post;
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData
-      ? [
-          { title: `${loaderData.title_fr || loaderData.title_ar} - Hassen Ben Ahmed` },
-          { name: "description", content: (loaderData.excerpt_fr || loaderData.excerpt_ar).slice(0, 155) },
-          { property: "og:title", content: loaderData.title_fr || loaderData.title_ar },
-          { property: "og:description", content: (loaderData.excerpt_fr || loaderData.excerpt_ar).slice(0, 155) },
-          { property: "og:type", content: "article" },
-          ...(loaderData.cover_url ? [{ property: "og:image", content: loaderData.cover_url }] : []),
-        ]
-      : [],
-  }),
+  head: ({ params, loaderData }) => {
+    if (!loaderData) {
+      return {
+        meta: [
+          { title: "Article introuvable - Hassen Ben Ahmed" },
+          { name: "robots", content: "noindex" },
+        ],
+        links: [],
+      };
+    }
+    const title = loaderData.title_fr || loaderData.title_ar || "Article";
+    const rawExcerpt =
+      loaderData.excerpt_fr || loaderData.excerpt_ar || loaderData.excerpt_en || "";
+    const description = rawExcerpt.slice(0, 200).trim() ||
+      "Article publié par Hassen Ben Ahmed.";
+    const path = `/blog/${params.slug}`;
+    const canonical = absoluteUrl(path);
+    const image = loaderData.cover_url ? absoluteUrl(loaderData.cover_url) : undefined;
+    const datePublished = loaderData.published_at ?? loaderData.created_at ?? undefined;
+    const dateModified = loaderData.updated_at ?? datePublished;
+    const article: Record<string, unknown> = {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: title,
+      description,
+      inLanguage: loaderData.title_fr ? "fr" : loaderData.title_ar ? "ar" : "en",
+      author: { "@type": "Person", name: PERSON_LD.name, url: SITE_URL },
+      publisher: PERSON_LD,
+      mainEntityOfPage: canonical,
+    };
+    if (image) article.image = image;
+    if (datePublished) article.datePublished = datePublished;
+    if (dateModified) article.dateModified = dateModified;
+
+    return buildRouteHead({
+      path,
+      title: `${title} - Hassen Ben Ahmed`,
+      description,
+      ogType: "article",
+      image,
+      imageAlt: title,
+      jsonLd: [
+        article,
+        breadcrumbLd([
+          { name: "Accueil", path: "/" },
+          { name: "Blog", path: "/blog" },
+          { name: title, path },
+        ]),
+      ],
+    });
+  },
+
   notFoundComponent: PostNotFound,
   component: PostPage,
 });
