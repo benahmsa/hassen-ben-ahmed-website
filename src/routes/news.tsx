@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { Pagination, usePaged } from "@/components/site/Pagination";
 import { useLanguage, localized, formatDate } from "@/lib/i18n";
+import { breadcrumbLd, buildRouteHead } from "@/lib/seo";
+
 
 const newsQuery = queryOptions({
   queryKey: ["news-list"],
@@ -20,19 +22,22 @@ const newsQuery = queryOptions({
 
 export const Route = createFileRoute("/news")({
   loader: ({ context }) => context.queryClient.ensureQueryData(newsQuery),
-  head: () => ({
-    meta: [
-      { title: "Actualités - Hassen Ben Ahmed | أخبار حسن بن أحمد" },
-      {
-        name: "description",
-        content: "Annonces et actualités en cours du journaliste Hassen Ben Ahmed.",
-      },
-      { property: "og:title", content: "Actualités - Hassen Ben Ahmed" },
-      { property: "og:description", content: "Annonces et actualités en cours." },
-    ],
-  }),
+  head: () =>
+    buildRouteHead({
+      path: "/news",
+      title: "Actualités - Hassen Ben Ahmed | أخبار حسن بن أحمد",
+      description:
+        "Annonces, événements et actualités récentes concernant Hassen Ben Ahmed.",
+      jsonLd: [
+        breadcrumbLd([
+          { name: "Accueil", path: "/" },
+          { name: "Actualités", path: "/news" },
+        ]),
+      ],
+    }),
   component: NewsPage,
 });
+
 
 function NewsPage() {
   const news = useSuspenseQuery(newsQuery).data;

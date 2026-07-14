@@ -7,6 +7,8 @@ import { useLanguage, localized } from "@/lib/i18n";
 import { toEmbedUrl } from "@/lib/storage";
 import { Pagination, usePaged } from "@/components/site/Pagination";
 import { Play, X } from "lucide-react";
+import { breadcrumbLd, buildRouteHead } from "@/lib/seo";
+
 
 const mediaQuery = queryOptions({
   queryKey: ["media-list"],
@@ -23,20 +25,22 @@ const mediaQuery = queryOptions({
 
 export const Route = createFileRoute("/archives")({
   loader: ({ context }) => context.queryClient.ensureQueryData(mediaQuery),
-  head: () => ({
-    meta: [
-      { title: "Archives - Hassen Ben Ahmed | أرشيف حسن بن أحمد" },
-      {
-        name: "description",
-        content:
-          "Photos, vidéos et anecdotes tirées de la carrière du journaliste Hassen Ben Ahmed : presse, télévision, festivals et sport.",
-      },
-      { property: "og:title", content: "Archives - Hassen Ben Ahmed" },
-      { property: "og:description", content: "Photos, vidéos et anecdotes d'une longue carrière de journaliste." },
-    ],
-  }),
+  head: () =>
+    buildRouteHead({
+      path: "/archives",
+      title: "Archives - Hassen Ben Ahmed | أرشيف حسن بن أحمد",
+      description:
+        "Photos, vidéos et anecdotes tirées de la carrière du journaliste Hassen Ben Ahmed : presse, télévision, festivals et sport.",
+      jsonLd: [
+        breadcrumbLd([
+          { name: "Accueil", path: "/" },
+          { name: "Archives", path: "/archives" },
+        ]),
+      ],
+    }),
   component: ArchivesPage,
 });
+
 
 type MediaItem = {
   id: string;

@@ -5,22 +5,26 @@ import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { useLanguage } from "@/lib/i18n";
 import { getTurnstileSiteKey, submitContactMessage } from "@/lib/contact.functions";
+import { breadcrumbLd, buildRouteHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact - Hassen Ben Ahmed | اتصل بحسن بن أحمد" },
-      {
-        name: "description",
-        content: "Contactez le journaliste Hassen Ben Ahmed via le formulaire de contact.",
-      },
-      { property: "og:title", content: "Contact - Hassen Ben Ahmed" },
-      { property: "og:description", content: "Formulaire de contact du journaliste Hassen Ben Ahmed." },
-    ],
-  }),
+  head: () =>
+    buildRouteHead({
+      path: "/contact",
+      title: "Contact - Hassen Ben Ahmed | اتصل بحسن بن أحمد",
+      description:
+        "Écrivez au journaliste Hassen Ben Ahmed via le formulaire de contact sécurisé.",
+      jsonLd: [
+        breadcrumbLd([
+          { name: "Accueil", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ]),
+      ],
+    }),
   loader: () => getTurnstileSiteKey(),
   component: ContactPage,
 });
+
 
 const schema = z.object({
   name: z.string().trim().min(1).max(100),

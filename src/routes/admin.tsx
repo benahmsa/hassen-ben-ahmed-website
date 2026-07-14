@@ -13,13 +13,20 @@ import { BioManager } from "@/components/admin/BioManager";
 import { MessagesManager } from "@/components/admin/MessagesManager";
 import { UsersManager } from "@/components/admin/UsersManager";
 
+import { buildRouteHead } from "@/lib/seo";
+
 export const Route = createFileRoute("/admin")({
-  head: () => ({
-    meta: [{ title: "Administration - Hassen Ben Ahmed" }, { name: "robots", content: "noindex" }],
-  }),
+  head: () =>
+    buildRouteHead({
+      path: "/admin",
+      title: "Administration - Hassen Ben Ahmed",
+      description: "Console d'administration privée.",
+      noindex: true,
+    }),
   ssr: false,
   component: AdminPage,
 });
+
 
 const TABS = [
   { id: "posts", label: "Articles / المقالات" },

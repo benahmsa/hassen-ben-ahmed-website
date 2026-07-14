@@ -1,2 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /auth
+
+Sitemap: https://hassenbenahmed.com/sitemap.xml

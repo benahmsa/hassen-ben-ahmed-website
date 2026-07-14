@@ -73,26 +73,29 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+import {
+  DEFAULT_OG_IMAGE,
+  PERSON_LD,
+  SITE_NAME,
+  WEBSITE_LD,
+  jsonLdString,
+} from "@/lib/seo";
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Hassen Ben Ahmed - Journaliste | حسن بن أحمد" },
-      {
-        name: "description",
-        content:
-          "Site officiel de Hassen Ben Ahmed, journaliste tunisien spécialisé dans les arts, la culture et le sport. Blog, biographie, archives et actualités.",
-      },
-      { name: "author", content: "Hassen Ben Ahmed" },
-      { property: "og:title", content: "Hassen Ben Ahmed - Journaliste | حسن بن أحمد" },
-      {
-        property: "og:description",
-        content:
-          "Blog, biographie, archives et actualités du journaliste tunisien Hassen Ben Ahmed.",
-      },
-      { property: "og:type", content: "website" },
+      { name: "author", content: SITE_NAME },
+      { property: "og:site_name", content: SITE_NAME },
+      { property: "og:locale", content: "fr_FR" },
+      { property: "og:locale:alternate", content: "ar_TN" },
+      { property: "og:locale:alternate", content: "en_GB" },
+      { property: "og:image", content: DEFAULT_OG_IMAGE },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: DEFAULT_OG_IMAGE },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -104,7 +107,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap",
       },
     ],
+    scripts: [
+      { type: "application/ld+json", children: jsonLdString(WEBSITE_LD) },
+      { type: "application/ld+json", children: jsonLdString(PERSON_LD) },
+    ],
   }),
+
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,

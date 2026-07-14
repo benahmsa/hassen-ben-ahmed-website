@@ -3,6 +3,14 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { useLanguage, localized } from "@/lib/i18n";
+import {
+  PERSON_LD,
+  SITE_URL,
+  absoluteUrl,
+  breadcrumbLd,
+  buildRouteHead,
+} from "@/lib/seo";
+
 
 const bioQuery = queryOptions({
   queryKey: ["biography"],
@@ -18,20 +26,30 @@ const bioQuery = queryOptions({
 
 export const Route = createFileRoute("/biography")({
   loader: ({ context }) => context.queryClient.ensureQueryData(bioQuery),
-  head: () => ({
-    meta: [
-      { title: "Biographie - Hassen Ben Ahmed | سيرة حسن بن أحمد" },
-      {
-        name: "description",
-        content:
-          "Parcours du journaliste tunisien Hassen Ben Ahmed : presse écrite, pages arts et culture, football, télévision et festivals.",
-      },
-      { property: "og:title", content: "Biographie - Hassen Ben Ahmed" },
-      { property: "og:description", content: "Le parcours du journaliste tunisien Hassen Ben Ahmed depuis 1979." },
-    ],
-  }),
+  head: () =>
+    buildRouteHead({
+      path: "/biography",
+      title: "Biographie - Hassen Ben Ahmed | سيرة حسن بن أحمد",
+      description:
+        "Parcours du journaliste tunisien Hassen Ben Ahmed : presse écrite, pages arts et culture, football, télévision et festivals.",
+      ogType: "profile",
+      jsonLd: [
+        {
+          "@context": "https://schema.org",
+          "@type": "ProfilePage",
+          mainEntity: PERSON_LD,
+          url: absoluteUrl("/biography"),
+          inLanguage: ["fr", "ar", "en"],
+        },
+        breadcrumbLd([
+          { name: "Accueil", path: "/" },
+          { name: "Biographie", path: "/biography" },
+        ]),
+      ],
+    }),
   component: BiographyPage,
 });
+
 
 const MILESTONES = [
   { year: "1979", ar: "بداية المسيرة في الصحافة المكتوبة", fr: "Débuts dans la presse écrite", en: "Career start in print journalism" },
