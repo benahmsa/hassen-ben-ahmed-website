@@ -150,6 +150,19 @@ export const WEBSITE_LD = {
   name: SITE_NAME,
   url: SITE_URL,
   inLanguage: ["fr", "ar", "en"],
+  publisher: { "@id": `${SITE_URL}/#organization` },
+} as const;
+
+// Organization node representing the site itself. Kept minimal and factual:
+// no sameAs until the user provides officially-owned social profiles.
+export const ORGANIZATION_LD = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${SITE_URL}/#organization`,
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: PORTRAIT_URL,
+  image: DEFAULT_OG_IMAGE,
 } as const;
 
 export function breadcrumbLd(items: Array<{ name: string; path: string }>) {

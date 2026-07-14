@@ -75,6 +75,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 
 import {
   DEFAULT_OG_IMAGE,
+  ORGANIZATION_LD,
   PERSON_LD,
   SITE_NAME,
   WEBSITE_LD,
@@ -108,6 +109,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
     ],
     scripts: [
+      { type: "application/ld+json", children: jsonLdString(ORGANIZATION_LD) },
       { type: "application/ld+json", children: jsonLdString(WEBSITE_LD) },
       { type: "application/ld+json", children: jsonLdString(PERSON_LD) },
     ],
