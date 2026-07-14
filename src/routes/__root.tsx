@@ -109,6 +109,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
     ],
     scripts: [
+      { type: "application/ld+json", children: jsonLdString(ORGANIZATION_LD) },
       { type: "application/ld+json", children: jsonLdString(WEBSITE_LD) },
       { type: "application/ld+json", children: jsonLdString(PERSON_LD) },
     ],
