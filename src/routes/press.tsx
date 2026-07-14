@@ -14,10 +14,11 @@ const pressQuery = queryOptions({
   queryFn: async () => {
     const { data } = await supabase
       .from("media_items")
-      .select("*")
+      .select("id, url, thumbnail_url, caption_ar, caption_fr, caption_en")
       .eq("published", true)
       .eq("media_type", "article")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .limit(120);
     return data ?? [];
   },
 });

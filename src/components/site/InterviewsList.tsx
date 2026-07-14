@@ -18,7 +18,8 @@ export const interviewsListQuery = (category: InterviewCategory) =>
         .eq("published", true)
         .eq("category", category)
         .order("published_at", { ascending: false, nullsFirst: false })
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .limit(60);
       if (error) throw error;
       return data ?? [];
     },

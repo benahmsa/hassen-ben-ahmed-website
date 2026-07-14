@@ -68,6 +68,8 @@ function HomePage() {
           alt="Bureau de presse - machine à écrire, micro et journaux"
           width={1920}
           height={1088}
+          fetchPriority="high"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/75 to-background/95" />
@@ -76,6 +78,9 @@ function HomePage() {
           src={portraitAsset.url}
           alt="Portrait de Hassen Ben Ahmed"
           aria-hidden="true"
+          width={1200}
+          height={1600}
+          decoding="async"
           className="pointer-events-none absolute inset-y-0 end-0 h-full w-full object-cover object-center opacity-25 mix-blend-luminosity md:w-2/3 md:opacity-40"
           style={{
             WebkitMaskImage:
@@ -134,6 +139,7 @@ function HomePage() {
                     src={post.cover_url}
                     alt={localized(post, "title", lang)}
                     loading="lazy"
+                    decoding="async"
                     className="aspect-[16/9] w-full object-cover"
                   />
                 )}
@@ -201,6 +207,7 @@ function HomePage() {
                   src={m.thumbnail_url || m.url}
                   alt={localized(m, "caption", lang)}
                   loading="lazy"
+                  decoding="async"
                   className="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </Link>

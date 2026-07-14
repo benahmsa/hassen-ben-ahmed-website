@@ -17,7 +17,7 @@ const bioQuery = queryOptions({
   queryFn: async () => {
     const { data } = await supabase
       .from("site_content")
-      .select("*")
+      .select("key, content_ar, content_fr, content_en, updated_at")
       .eq("key", "biography")
       .maybeSingle();
     return data;
