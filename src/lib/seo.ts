@@ -39,7 +39,15 @@ type MetaEntry =
   | { name: string; content: string }
   | { property: string; content: string };
 
-type LinkEntry = { rel: string; href: string; hrefLang?: string };
+type LinkEntry = {
+  rel: string;
+  href: string;
+  hrefLang?: string;
+  as?: string;
+  fetchpriority?: "high" | "low" | "auto";
+  crossOrigin?: "anonymous" | "use-credentials";
+  type?: string;
+};
 
 type ScriptEntry = { type: string; children: string };
 
