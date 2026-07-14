@@ -13,9 +13,10 @@ const newsQuery = queryOptions({
   queryFn: async () => {
     const { data } = await supabase
       .from("news_items")
-      .select("*")
+      .select("id, title_ar, title_fr, title_en, content_ar, content_fr, content_en, created_at")
       .eq("published", true)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .limit(60);
     return data ?? [];
   },
 });

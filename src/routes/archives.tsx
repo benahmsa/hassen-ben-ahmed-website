@@ -15,10 +15,11 @@ const mediaQuery = queryOptions({
   queryFn: async () => {
     const { data } = await supabase
       .from("media_items")
-      .select("*")
+      .select("id, media_type, url, thumbnail_url, caption_ar, caption_fr, caption_en")
       .eq("published", true)
       .in("media_type", ["photo", "video"])
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .limit(120);
     return data ?? [];
   },
 });

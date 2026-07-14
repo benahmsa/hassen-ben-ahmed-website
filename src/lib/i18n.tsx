@@ -1,7 +1,9 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
   type ReactNode,
 } from "react";
@@ -161,15 +163,20 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     document.documentElement.dir = dir;
   }, [lang, dir]);
 
-  const setLang = (l: Lang) => {
+  const setLang = useCallback((l: Lang) => {
     setLangState(l);
     localStorage.setItem(STORAGE_KEY, l);
-  };
+  }, []);
 
-  const t = (key: DictKey) => dict[key][lang];
+  const t = useCallback((key: DictKey) => dict[key][lang], [lang]);
+
+  const value = useMemo<Ctx>(
+    () => ({ lang, setLang, t, dir }),
+    [lang, setLang, t, dir],
+  );
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang, t, dir }}>
+    <LanguageContext.Provider value={value}>
       {children}
     </LanguageContext.Provider>
   );

@@ -15,7 +15,8 @@ const postsQuery = queryOptions({
       .from("posts")
       .select("id, slug, title_ar, title_fr, title_en, excerpt_ar, excerpt_fr, excerpt_en, cover_url, published_at, created_at")
       .eq("published", true)
-      .order("published_at", { ascending: false, nullsFirst: false });
+      .order("published_at", { ascending: false, nullsFirst: false })
+      .limit(60);
     return data ?? [];
   },
 });
@@ -66,6 +67,7 @@ function BlogPage() {
                       src={post.cover_url}
                       alt={localized(post, "title", lang)}
                       loading="lazy"
+                      decoding="async"
                       className="aspect-[4/3] w-full rounded-md object-cover"
                     />
                   ) : (

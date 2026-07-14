@@ -18,7 +18,9 @@ const postQuery = (slug: string) =>
     queryFn: async () => {
       const { data } = await supabase
         .from("posts")
-        .select("*")
+        .select(
+          "id, slug, title_ar, title_fr, title_en, excerpt_ar, excerpt_fr, excerpt_en, content_ar, content_fr, content_en, cover_url, published_at, updated_at, created_at",
+        )
         .eq("slug", slug)
         .eq("published", true)
         .maybeSingle();
@@ -66,7 +68,7 @@ export const Route = createFileRoute("/blog/$slug")({
     if (datePublished) article.datePublished = datePublished;
     if (dateModified) article.dateModified = dateModified;
 
-    return buildRouteHead({
+    const head = buildRouteHead({
       path,
       title: `${title} - Hassen Ben Ahmed`,
       description,
@@ -82,6 +84,13 @@ export const Route = createFileRoute("/blog/$slug")({
         ]),
       ],
     });
+    if (image) {
+      head.links = [
+        ...(head.links ?? []),
+        { rel: "preload", as: "image", href: image, fetchpriority: "high" },
+      ];
+    }
+    return head;
   },
 
   notFoundComponent: PostNotFound,
@@ -126,7 +135,11 @@ function PostPage() {
           <img
             src={post.cover_url}
             alt={localized(post, "title", lang)}
-            className="mt-8 w-full rounded-lg object-cover"
+            width={1600}
+            height={900}
+            fetchPriority="high"
+            decoding="async"
+            className="mt-8 aspect-[16/9] w-full rounded-lg object-cover"
           />
         )}
         <div className="prose-article mt-8">{localized(post, "content", lang)}</div>
