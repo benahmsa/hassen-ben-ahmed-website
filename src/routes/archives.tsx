@@ -1,27 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { useLanguage, localized } from "@/lib/i18n";
 import { toEmbedUrl } from "@/lib/storage";
 import { Pagination, usePaged } from "@/components/site/Pagination";
 import { Play, X } from "lucide-react";
 import { breadcrumbLd, buildRouteHead } from "@/lib/seo";
+import { getArchiveItems } from "@/lib/public-content.functions";
 
 
 const mediaQuery = queryOptions({
   queryKey: ["media-list"],
-  queryFn: async () => {
-    const { data } = await supabase
-      .from("media_items")
-      .select("id, media_type, url, thumbnail_url, caption_ar, caption_fr, caption_en")
-      .eq("published", true)
-      .in("media_type", ["photo", "video"])
-      .order("created_at", { ascending: false })
-      .limit(120);
-    return data ?? [];
-  },
+  queryFn: () => getArchiveItems(),
 });
 
 export const Route = createFileRoute("/archives")({

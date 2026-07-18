@@ -1,41 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { useLanguage, localized, formatDate } from "@/lib/i18n";
+import { getHomeData } from "@/lib/public-content.functions";
 import heroImg from "@/assets/hero-press.jpg";
 import portraitAsset from "@/assets/hassen-portrait.jpg.asset.json";
 
 const homeQuery = queryOptions({
   queryKey: ["home-data"],
-  queryFn: async () => {
-    const [posts, news, media] = await Promise.all([
-      supabase
-        .from("posts")
-        .select("id, slug, title_ar, title_fr, title_en, excerpt_ar, excerpt_fr, excerpt_en, cover_url, published_at, created_at")
-        .eq("published", true)
-        .order("published_at", { ascending: false, nullsFirst: false })
-        .limit(3),
-      supabase
-        .from("news_items")
-        .select("id, title_ar, title_fr, title_en, content_ar, content_fr, content_en, created_at")
-        .eq("published", true)
-        .order("created_at", { ascending: false })
-        .limit(3),
-      supabase
-        .from("media_items")
-        .select("id, media_type, url, thumbnail_url, caption_ar, caption_fr, caption_en")
-        .eq("published", true)
-        .eq("media_type", "photo")
-        .order("sort_order")
-        .limit(4),
-    ]);
-    return {
-      posts: posts.data ?? [],
-      news: news.data ?? [],
-      media: media.data ?? [],
-    };
-  },
+  queryFn: () => getHomeData(),
 });
 
 import { buildRouteHead, breadcrumbLd } from "@/lib/seo";

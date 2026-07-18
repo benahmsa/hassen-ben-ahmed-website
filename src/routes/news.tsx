@@ -1,24 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { Pagination, usePaged } from "@/components/site/Pagination";
 import { useLanguage, localized, formatDate } from "@/lib/i18n";
 import { breadcrumbLd, buildRouteHead } from "@/lib/seo";
+import { getNewsItems } from "@/lib/public-content.functions";
 
 
 const newsQuery = queryOptions({
   queryKey: ["news-list"],
-  queryFn: async () => {
-    const { data } = await supabase
-      .from("news_items")
-      .select("id, title_ar, title_fr, title_en, content_ar, content_fr, content_en, created_at")
-      .eq("published", true)
-      .order("created_at", { ascending: false })
-      .limit(60);
-    return data ?? [];
-  },
+  queryFn: () => getNewsItems(),
 });
 
 export const Route = createFileRoute("/news")({

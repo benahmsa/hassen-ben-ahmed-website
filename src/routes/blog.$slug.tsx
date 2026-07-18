@@ -1,8 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { useLanguage, localized, formatDate } from "@/lib/i18n";
+import { getBlogPostBySlug } from "@/lib/public-content.functions";
 import {
   PERSON_LD,
   SITE_URL,
@@ -15,17 +15,7 @@ import {
 const postQuery = (slug: string) =>
   queryOptions({
     queryKey: ["post", slug],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from("posts")
-        .select(
-          "id, slug, title_ar, title_fr, title_en, excerpt_ar, excerpt_fr, excerpt_en, content_ar, content_fr, content_en, cover_url, published_at, updated_at, created_at",
-        )
-        .eq("slug", slug)
-        .eq("published", true)
-        .maybeSingle();
-      return data;
-    },
+    queryFn: () => getBlogPostBySlug({ data: { slug } }),
   });
 
 export const Route = createFileRoute("/blog/$slug")({
