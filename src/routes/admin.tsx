@@ -11,6 +11,7 @@ import { NewsManager } from "@/components/admin/NewsManager";
 import { MediaManager } from "@/components/admin/MediaManager";
 import { BioManager } from "@/components/admin/BioManager";
 import { MessagesManager } from "@/components/admin/MessagesManager";
+import { ContactSettingsManager } from "@/components/admin/ContactSettingsManager";
 import { UsersManager } from "@/components/admin/UsersManager";
 
 import { buildRouteHead } from "@/lib/seo";
@@ -35,6 +36,7 @@ const TABS = [
   { id: "interviews", label: "Interviews / حوارات" },
   { id: "bio", label: "Biographie / السيرة" },
   { id: "messages", label: "Messages / الرسائل" },
+  { id: "contact", label: "Contact / الاتصال" },
   { id: "users", label: "Admins / المشرفون" },
 ] as const;
 
@@ -127,6 +129,7 @@ function AdminPage() {
           {tab === "interviews" && <InterviewsManager />}
           {tab === "bio" && <BioManager />}
           {tab === "messages" && <MessagesManager />}
+          {tab === "contact" && <ContactSettingsManager />}
           {tab === "users" && <UsersManager currentUserId={session.user.id} />}
         </div>
       </div>
