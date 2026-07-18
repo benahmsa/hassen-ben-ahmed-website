@@ -1,24 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { Pagination, usePaged } from "@/components/site/Pagination";
 import { useLanguage, localized, formatDate } from "@/lib/i18n";
 import { breadcrumbLd, buildRouteHead } from "@/lib/seo";
+import { getBlogPosts } from "@/lib/public-content.functions";
 
 
 const postsQuery = queryOptions({
   queryKey: ["posts-list"],
-  queryFn: async () => {
-    const { data } = await supabase
-      .from("posts")
-      .select("id, slug, title_ar, title_fr, title_en, excerpt_ar, excerpt_fr, excerpt_en, cover_url, published_at, created_at")
-      .eq("published", true)
-      .order("published_at", { ascending: false, nullsFirst: false })
-      .limit(60);
-    return data ?? [];
-  },
+  queryFn: () => getBlogPosts(),
 });
 
 export const Route = createFileRoute("/blog/")({

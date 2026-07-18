@@ -2,25 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { X } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { useLanguage, localized } from "@/lib/i18n";
 import { Pagination, usePaged } from "@/components/site/Pagination";
 import { breadcrumbLd, buildRouteHead } from "@/lib/seo";
+import { getPressItems } from "@/lib/public-content.functions";
 
 
 const pressQuery = queryOptions({
   queryKey: ["press-list"],
-  queryFn: async () => {
-    const { data } = await supabase
-      .from("media_items")
-      .select("id, url, thumbnail_url, caption_ar, caption_fr, caption_en")
-      .eq("published", true)
-      .eq("media_type", "article")
-      .order("created_at", { ascending: false })
-      .limit(120);
-    return data ?? [];
-  },
+  queryFn: () => getPressItems(),
 });
 
 export const Route = createFileRoute("/press")({

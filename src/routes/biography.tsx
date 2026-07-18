@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { useLanguage, localized } from "@/lib/i18n";
+import { getBiographyContent } from "@/lib/public-content.functions";
 import {
   PERSON_LD,
   SITE_URL,
@@ -14,14 +14,7 @@ import {
 
 const bioQuery = queryOptions({
   queryKey: ["biography"],
-  queryFn: async () => {
-    const { data } = await supabase
-      .from("site_content")
-      .select("key, content_ar, content_fr, content_en, updated_at")
-      .eq("key", "biography")
-      .maybeSingle();
-    return data;
-  },
+  queryFn: () => getBiographyContent(),
 });
 
 export const Route = createFileRoute("/biography")({

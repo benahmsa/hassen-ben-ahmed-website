@@ -1,28 +1,15 @@
 import { useState } from "react";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { Pagination, usePaged } from "@/components/site/Pagination";
 import { useLanguage, localized } from "@/lib/i18n";
+import { getInterviewsByCategory } from "@/lib/public-content.functions";
 
 export type InterviewCategory = "commentary" | "media";
 
 export const interviewsListQuery = (category: InterviewCategory) =>
   queryOptions({
     queryKey: ["interviews-list", category],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("interviews")
-        .select(
-          "id, youtube_id, title_ar, title_fr, title_en, description_ar, description_fr, description_en, published_at, created_at",
-        )
-        .eq("published", true)
-        .eq("category", category)
-        .order("published_at", { ascending: false, nullsFirst: false })
-        .order("created_at", { ascending: false })
-        .limit(60);
-      if (error) throw error;
-      return data ?? [];
-    },
+    queryFn: () => getInterviewsByCategory({ data: { category } }),
   });
 
 export function InterviewsList({ category }: { category: InterviewCategory }) {
