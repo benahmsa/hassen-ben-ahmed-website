@@ -102,6 +102,9 @@ function ContactPage() {
                 value={form.email}
                 maxLength={255}
                 required
+                dir="ltr"
+                lang="fr"
+                style={{ textAlign: "left" }}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
               />
             </div>
