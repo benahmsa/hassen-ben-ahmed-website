@@ -48,7 +48,7 @@ const setAdminSchema = z.object({
 
 export const setAdminByEmail = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data) => setAdminSchema.parse(data))
+  .validator((data) => setAdminSchema.parse(data))
   .handler(async ({ data, context }) => {
     const ctx = context as unknown as AuthCtx;
     await assertAdmin(ctx);

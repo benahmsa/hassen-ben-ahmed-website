@@ -15,7 +15,7 @@ export const getTurnstileSiteKey = createServerFn({ method: "GET" }).handler(asy
 });
 
 export const submitContactMessage = createServerFn({ method: "POST" })
-  .inputValidator((data) => contactSchema.parse(data))
+  .validator((data) => contactSchema.parse(data))
   .handler(async ({ data }) => {
     const secret = process.env.TURNSTILE_SECRET_KEY;
     if (!secret) {
