@@ -57,9 +57,9 @@ function HomePage() {
           className="pointer-events-none absolute inset-y-0 end-0 h-full w-full object-cover object-top opacity-25 mix-blend-luminosity md:w-2/3 md:opacity-40"
           style={{
             WebkitMaskImage:
-              "linear-gradient(to left, hsl(0 0% 0% / 0.95) 0%, hsl(0 0% 0% / 0.6) 45%, transparent 85%)",
+              "linear-gradient(to left, hsl(0 0% 0% / 1) 0%, hsl(0 0% 0% / 0.7) 45%, hsl(0 0% 0% / 0.1) 85%)",
             maskImage:
-              "linear-gradient(to left, hsl(0 0% 0% / 0.95) 0%, hsl(0 0% 0% / 0.6) 45%, transparent 85%)",
+              "linear-gradient(to left, hsl(0 0% 0% / 1) 0%, hsl(0 0% 0% / 0.7) 45%, hsl(0 0% 0% / 0.1) 85%)",
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/30 to-transparent" />
