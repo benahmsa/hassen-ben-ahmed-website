@@ -54,7 +54,7 @@ function HomePage() {
           width={1200}
           height={1600}
           decoding="async"
-          className="pointer-events-none absolute inset-y-0 end-0 h-full w-full object-cover object-center opacity-25 mix-blend-luminosity md:w-2/3 md:opacity-40"
+          className="pointer-events-none absolute inset-y-0 end-0 h-full w-full object-cover object-top opacity-25 mix-blend-luminosity md:w-2/3 md:opacity-40"
           style={{
             WebkitMaskImage:
               "linear-gradient(to left, hsl(0 0% 0% / 0.95) 0%, hsl(0 0% 0% / 0.6) 45%, transparent 85%)",
