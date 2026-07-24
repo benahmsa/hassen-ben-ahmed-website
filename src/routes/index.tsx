@@ -4,7 +4,7 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { useLanguage, localized, formatDate } from "@/lib/i18n";
 import { getHomeData } from "@/lib/public-content.functions";
 import heroImg from "@/assets/hero-press.jpg";
-import portraitAsset from "@/assets/hassen-portrait.jpg.asset.json";
+import portraitAsset from "@/assets/hassen-portrait-cutout.png.asset.json";
 
 const homeQuery = queryOptions({
   queryKey: ["home-data"],
