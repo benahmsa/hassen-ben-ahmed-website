@@ -4,7 +4,7 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { useLanguage, localized, formatDate } from "@/lib/i18n";
 import { getHomeData } from "@/lib/public-content.functions";
 import heroImg from "@/assets/hero-press.jpg";
-import portraitAsset from "@/assets/hassen-portrait.jpg.asset.json";
+import portraitAsset from "@/assets/hassen-portrait-cutout.png.asset.json";
 
 const homeQuery = queryOptions({
   queryKey: ["home-data"],
@@ -51,15 +51,15 @@ function HomePage() {
           src={portraitAsset.url}
           alt="Portrait de Hassen Ben Ahmed"
           aria-hidden="true"
-          width={1200}
-          height={1600}
+          width={900}
+          height={1200}
           decoding="async"
-          className="pointer-events-none absolute inset-y-0 end-0 h-full w-full object-cover object-top opacity-25 mix-blend-luminosity md:w-2/3 md:opacity-40"
+          className="pointer-events-none absolute inset-y-0 end-0 h-full w-auto object-contain object-bottom opacity-90 md:opacity-100"
           style={{
             WebkitMaskImage:
-              "linear-gradient(to left, hsl(0 0% 0% / 0.95) 0%, hsl(0 0% 0% / 0.6) 45%, transparent 85%)",
+              "linear-gradient(to left, hsl(0 0% 0% / 1) 60%, transparent 100%)",
             maskImage:
-              "linear-gradient(to left, hsl(0 0% 0% / 0.95) 0%, hsl(0 0% 0% / 0.6) 45%, transparent 85%)",
+              "linear-gradient(to left, hsl(0 0% 0% / 1) 60%, transparent 100%)",
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/30 to-transparent" />
