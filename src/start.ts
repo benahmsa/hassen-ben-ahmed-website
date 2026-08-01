@@ -1,7 +1,6 @@
 import { createStart, createMiddleware } from "@tanstack/react-start";
 
 import { renderErrorPage } from "./lib/error-page";
-import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";
 
 const errorMiddleware = createMiddleware().server(async ({ next }) => {
   try {
@@ -40,6 +39,6 @@ const attachOptionalSupabaseAuth = createMiddleware({ type: "function" }).client
 export const startInstance = createStart(() => ({
   // The generated auth middleware eagerly creates the browser database client.
   // Public deployments can omit VITE_* values, so use the guarded equivalent only.
-  functionMiddleware: [attachSupabaseAuth, attachOptionalSupabaseAuth],
+  functionMiddleware: [attachOptionalSupabaseAuth],
   requestMiddleware: [errorMiddleware],
 }));
