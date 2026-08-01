@@ -10,7 +10,7 @@ import { breadcrumbLd, buildRouteHead } from "@/lib/seo";
 import { getArchiveItems } from "@/lib/public-content.functions";
 
 
-const mediaQuery = queryOptions({
+export const mediaQuery = queryOptions({
   queryKey: ["media-list"],
   queryFn: () => getArchiveItems(),
 });

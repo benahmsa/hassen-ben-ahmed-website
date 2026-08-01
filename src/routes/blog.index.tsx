@@ -8,7 +8,7 @@ import { breadcrumbLd, buildRouteHead } from "@/lib/seo";
 import { getBlogPosts } from "@/lib/public-content.functions";
 
 
-const postsQuery = queryOptions({
+export const postsQuery = queryOptions({
   queryKey: ["posts-list"],
   queryFn: () => getBlogPosts(),
 });

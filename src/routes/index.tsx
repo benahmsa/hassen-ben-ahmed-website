@@ -6,7 +6,7 @@ import { getHomeData } from "@/lib/public-content.functions";
 import heroImg from "@/assets/hero-press.jpg";
 import portraitAsset from "@/assets/hassen-portrait-cutout.png.asset.json";
 
-const homeQuery = queryOptions({
+export const homeQuery = queryOptions({
   queryKey: ["home-data"],
   queryFn: () => getHomeData(),
 });
