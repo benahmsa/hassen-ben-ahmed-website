@@ -8,7 +8,7 @@ import { breadcrumbLd, buildRouteHead } from "@/lib/seo";
 import { getNewsItems } from "@/lib/public-content.functions";
 
 
-const newsQuery = queryOptions({
+export const newsQuery = queryOptions({
   queryKey: ["news-list"],
   queryFn: () => getNewsItems(),
 });

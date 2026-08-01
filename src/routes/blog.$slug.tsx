@@ -12,7 +12,7 @@ import {
 } from "@/lib/seo";
 
 
-const postQuery = (slug: string) =>
+export const postQuery = (slug: string) =>
   queryOptions({
     queryKey: ["post", slug],
     queryFn: () => getBlogPostBySlug({ data: { slug } }),

@@ -12,7 +12,7 @@ import {
 } from "@/lib/seo";
 
 
-const bioQuery = queryOptions({
+export const bioQuery = queryOptions({
   queryKey: ["biography"],
   queryFn: () => getBiographyContent(),
 });

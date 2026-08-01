@@ -9,7 +9,7 @@ import { breadcrumbLd, buildRouteHead } from "@/lib/seo";
 import { getPressItems } from "@/lib/public-content.functions";
 
 
-const pressQuery = queryOptions({
+export const pressQuery = queryOptions({
   queryKey: ["press-list"],
   queryFn: () => getPressItems(),
 });
