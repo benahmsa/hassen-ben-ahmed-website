@@ -1,5 +1,4 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getRequestIP } from "@tanstack/react-start/server";
 import { contactSchema } from "./contact.schemas";
 
 export const getTurnstileSiteKey = createServerFn({ method: "GET" }).handler(async () => {
@@ -16,6 +15,7 @@ export const submitContactMessage = createServerFn({ method: "POST" })
 
     let remoteip: string | undefined;
     try {
+      const { getRequestIP } = await import("@tanstack/react-start/server");
       remoteip = getRequestIP({ xForwardedFor: true }) ?? undefined;
     } catch {
       remoteip = undefined;
