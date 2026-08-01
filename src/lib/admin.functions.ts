@@ -1,26 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
-import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-
-type AuthCtx = {
-  supabase: { rpc: (fn: string, args: Record<string, unknown>) => PromiseLike<{ data: unknown; error: unknown }> };
-  userId: string;
-};
-
-async function assertAdmin(context: AuthCtx) {
-  const { data, error } = await context.supabase.rpc("has_role", {
-    _user_id: context.userId,
-    _role: "admin",
-  });
-  if (error || data !== true) {
-    throw new Error("Forbidden: admin role required");
-  }
-}
+import { setAdminSchema } from "./admin.schemas";
+import { assertAdmin, type AuthContext } from "./admin-auth.server";
 
 export const listAdminUsers = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await assertAdmin(context as unknown as AuthCtx);
+    await assertAdmin(context as unknown as AuthContext);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     const { data: usersData, error: usersErr } = await supabaseAdmin.auth.admin.listUsers({
@@ -40,17 +26,11 @@ export const listAdminUsers = createServerFn({ method: "GET" })
     }));
   });
 
-const setAdminSchema = z.object({
-  email: z.string().trim().email().max(255),
-  grant: z.boolean(),
-  password: z.string().min(8).max(72).optional(),
-});
-
 export const setAdminByEmail = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((data) => setAdminSchema.parse(data))
   .handler(async ({ data, context }) => {
-    const ctx = context as unknown as AuthCtx;
+    const ctx = context as unknown as AuthContext;
     await assertAdmin(ctx);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
