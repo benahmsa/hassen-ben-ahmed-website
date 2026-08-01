@@ -148,12 +148,40 @@ const LanguageContext = createContext<Ctx>({
   dir: "rtl",
 });
 
+// Survit aux remontages du provider (invalidation du routeur, boundary d'erreur)
+// pour éviter que la langue ne revienne à l'arabe toute seule.
+let cachedLang: Lang | null = null;
+
+function readStoredLang(): Lang | null {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === "ar" || saved === "fr" || saved === "en") return saved;
+  } catch {
+    /* storage indisponible */
+  }
+  return null;
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("ar");
+  const [lang, setLangState] = useState<Lang>(cachedLang ?? "ar");
 
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY) as Lang | null;
-    if (saved === "ar" || saved === "fr" || saved === "en") setLangState(saved);
+    const saved = readStoredLang();
+    if (saved) {
+      cachedLang = saved;
+      setLangState((current) => (current === saved ? current : saved));
+    }
+
+    const onStorage = (e: StorageEvent) => {
+      if (e.key !== STORAGE_KEY) return;
+      const next = readStoredLang();
+      if (next) {
+        cachedLang = next;
+        setLangState(next);
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
 
   const dir: "rtl" | "ltr" = lang === "ar" ? "rtl" : "ltr";
@@ -164,9 +192,15 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [lang, dir]);
 
   const setLang = useCallback((l: Lang) => {
+    cachedLang = l;
     setLangState(l);
-    localStorage.setItem(STORAGE_KEY, l);
+    try {
+      localStorage.setItem(STORAGE_KEY, l);
+    } catch {
+      /* storage indisponible */
+    }
   }, []);
+
 
   const t = useCallback((key: DictKey) => dict[key][lang], [lang]);
 
