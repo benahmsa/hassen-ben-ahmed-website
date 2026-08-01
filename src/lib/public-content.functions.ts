@@ -1,41 +1,41 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import {
-  fetchArchiveItems,
-  fetchBiographyContent,
-  fetchBlogPostBySlug,
-  fetchBlogPosts,
-  fetchHomeData,
-  fetchInterviewsByCategory,
-  fetchNewsItems,
-  fetchPressItems,
-} from "./public-content.server";
 
 const categorySchema = z.object({ category: z.enum(["commentary", "media"]) });
 const slugSchema = z.object({ slug: z.string().min(1).max(240) });
 
-export const getHomeData = createServerFn({ method: "GET" }).handler(async () => fetchHomeData());
+// The server module is imported lazily inside each handler so that it never
+// enters the client bundle (it reads process.env, which does not exist in the browser).
+const server = () => import("./public-content.server");
 
-export const getBiographyContent = createServerFn({ method: "GET" }).handler(async () =>
-  fetchBiographyContent(),
+export const getHomeData = createServerFn({ method: "GET" }).handler(async () =>
+  (await server()).fetchHomeData(),
 );
 
-export const getNewsItems = createServerFn({ method: "GET" }).handler(async () => fetchNewsItems());
+export const getBiographyContent = createServerFn({ method: "GET" }).handler(async () =>
+  (await server()).fetchBiographyContent(),
+);
+
+export const getNewsItems = createServerFn({ method: "GET" }).handler(async () =>
+  (await server()).fetchNewsItems(),
+);
 
 export const getPressItems = createServerFn({ method: "GET" }).handler(async () =>
-  fetchPressItems(),
+  (await server()).fetchPressItems(),
 );
 
 export const getArchiveItems = createServerFn({ method: "GET" }).handler(async () =>
-  fetchArchiveItems(),
+  (await server()).fetchArchiveItems(),
 );
 
-export const getBlogPosts = createServerFn({ method: "GET" }).handler(async () => fetchBlogPosts());
+export const getBlogPosts = createServerFn({ method: "GET" }).handler(async () =>
+  (await server()).fetchBlogPosts(),
+);
 
 export const getBlogPostBySlug = createServerFn({ method: "GET" })
   .validator((data) => slugSchema.parse(data))
-  .handler(async ({ data }) => fetchBlogPostBySlug(data.slug));
+  .handler(async ({ data }) => (await server()).fetchBlogPostBySlug(data.slug));
 
 export const getInterviewsByCategory = createServerFn({ method: "GET" })
   .validator((data) => categorySchema.parse(data))
-  .handler(async ({ data }) => fetchInterviewsByCategory(data.category));
+  .handler(async ({ data }) => (await server()).fetchInterviewsByCategory(data.category));
